@@ -1,1701 +1,1324 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="neon">
+<html lang="en" data-theme="obsidian">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Universal Clinical Guidance Console v4.1</title>
-    
-    <!-- Tailwind CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next-Gen OPD Medication Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
+    <!-- Futuristic Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/heroicons@2.0.13/24/outline/index.js"></script>
     <style>
         /* --- THEME VARIABLES --- */
         :root {
-            --transition-speed: 0.5s;
+            /* Base transitions */
+            --transition-speed: 0.4s;
         }
 
-        /* ANIMATIONS */
-        @keyframes breathe {
-            0% { filter: brightness(1) hue-rotate(0deg) saturate(1); transform: scale(1); }
-            50% { filter: brightness(1.15) hue-rotate(5deg) saturate(1.2); transform: scale(1.02); }
-            100% { filter: brightness(1) hue-rotate(0deg) saturate(1); transform: scale(1); }
-        }
-
-        @keyframes grid-pan {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
-
-        @keyframes pearl-shimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes pulse-border {
-            0% { border-color: rgba(var(--accent-primary-rgb), 0.3); box-shadow: 0 0 5px rgba(var(--accent-primary-rgb), 0.1); }
-            50% { border-color: rgba(var(--accent-primary-rgb), 0.8); box-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.4); }
-            100% { border-color: rgba(var(--accent-primary-rgb), 0.3); box-shadow: 0 0 5px rgba(var(--accent-primary-rgb), 0.1); }
-        }
-
-        @keyframes float-slow {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(20px, 30px) rotate(5deg); }
-            100% { transform: translate(-10px, -20px) rotate(-5deg); }
-        }
-
-        /* THEME 1: NEON AURORA */
-        [data-theme="neon"] {
-            --bg-body: #09090b;
-            --bg-panel: rgba(24, 24, 27, 0.75);
-            --bg-input: rgba(39, 39, 42, 0.6);
-            --border-color: rgba(161, 161, 170, 0.2);
-            --text-main: #e4e4e7;
-            --text-muted: #a1a1aa;
-            --accent-primary: #22d3ee; /* Cyan */
-            --accent-secondary: #a855f7; /* Purple */
-            --accent-primary-rgb: 34, 211, 238;
-            --font-head: 'Rajdhani', sans-serif;
-            --aurora-opacity: 0.8;
-            --grid-opacity: 0.05;
-            --anim-grid: none;
-            --anim-bg: none;
-        }
-
-        /* THEME 2: OBSIDIAN GRID */
+        /* THEME 1: Obsidian Prime (Metallic Gold-Silver-Black) */
         [data-theme="obsidian"] {
-            --bg-body: #020617;
-            --bg-panel: rgba(15, 23, 42, 0.85);
-            --bg-input: #1e293b;
-            --border-color: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-primary: #3b82f6; /* Blue */
-            --accent-secondary: #cbd5e1; /* Silver */
-            --accent-primary-rgb: 59, 130, 246;
-            --font-head: 'Inter', sans-serif;
-            --aurora-opacity: 0.1;
-            --grid-opacity: 0.25;
-            --anim-grid: grid-pan 60s linear infinite;
-            --anim-bg: none;
+            --bg-color: #050505;
+            --bg-gradient: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
+            --glass-bg: rgba(20, 20, 20, 0.75);
+            --glass-border: rgba(255, 215, 0, 0.3); /* Gold tint */
+            --text-primary: #e5e5e5;
+            --text-secondary: #a3a3a3;
+            --accent-color: #d4af37; /* Gold */
+            --accent-glow: rgba(212, 175, 55, 0.5);
+            --btn-grad-start: #d4af37;
+            --btn-grad-end: #c0c0c0; /* Silver */
+            --btn-text: #000;
+            --grid-color: rgba(255, 255, 255, 0.05);
+            --input-bg: rgba(255, 255, 255, 0.05);
         }
 
-        /* THEME 3: GOLD PEARL */
-        [data-theme="pearl"] {
-            --bg-body: #fdf4ff;
-            --bg-panel: rgba(255, 255, 255, 0.9);
-            --bg-input: #ffffff;
-            --border-color: #e5e7eb;
-            --text-main: #4a044e;
-            --text-muted: #a21caf; /* Lighter violet for placeholder */
-            --accent-primary: #d946ef; /* Fuschia */
-            --accent-secondary: #d97706; /* Gold */
-            --accent-primary-rgb: 217, 70, 239;
-            --font-head: 'Sarabun', sans-serif;
-            --aurora-opacity: 0.4;
-            --grid-opacity: 0.03;
-            --anim-grid: none;
-            --anim-bg: pearl-shimmer 15s ease infinite;
+        /* THEME 2: Ethereal Violet (Violet-Pearl-Beige) */
+        [data-theme="violet"] {
+            --bg-color: #f3e8ff;
+            --bg-gradient: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(139, 92, 246, 0.3);
+            --text-primary: #4c1d95;
+            --text-secondary: #6d28d9;
+            --accent-color: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.4);
+            --btn-grad-start: #a78bfa;
+            --btn-grad-end: #e5e7eb; /* Pearl/Beige tone */
+            --btn-text: #fff;
+            --grid-color: rgba(139, 92, 246, 0.1);
+            --input-bg: rgba(255, 255, 255, 0.8);
         }
 
-        /* --- GLOBAL STYLES --- */
+        /* THEME 3: Neon Aurora (Cyberpunk) */
+        [data-theme="neon"] {
+            --bg-color: #0f172a;
+            --bg-gradient: radial-gradient(at top right, #020617 0%, #1e1b4b 100%);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(56, 189, 248, 0.5); /* Cyan */
+            --text-primary: #e0f2fe;
+            --text-secondary: #94a3b8;
+            --accent-color: #0ea5e9; /* Sky Blue */
+            --accent-glow: rgba(14, 165, 233, 0.8);
+            --btn-grad-start: #0ea5e9;
+            --btn-grad-end: #ec4899; /* Pink/Aurora */
+            --btn-text: #fff;
+            --grid-color: rgba(56, 189, 248, 0.15);
+            --input-bg: rgba(30, 41, 59, 0.6);
+        }
+
         body {
-            font-family: 'Inter', 'Sarabun', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            transition: all var(--transition-speed);
-            overflow: hidden;
-            background-size: 400% 400%; /* For pearl shimmer */
-            animation: var(--anim-bg);
-        }
-        
-        /* Pearl specific background gradient override on body tag */
-        [data-theme="pearl"] body {
-            background: linear-gradient(-45deg, #fdf4ff, #fae8ff, #f5d0fe, #fdf4ff);
-            background-size: 400% 400%;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: var(--bg-gradient);
+            color: var(--text-primary);
+            transition: background 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        h1, h2, h3, h4, h5 { font-family: var(--font-head); }
-
-        /* Background Effects */
-        .bg-layer { position: fixed; inset: 0; z-index: -1; pointer-events: none; transition: opacity 1s ease; }
-        
-        .aurora-blob {
-            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5;
-            animation: float-slow 20s infinite ease-in-out alternate, breathe 8s infinite ease-in-out;
-        }
-        .blob-1 { top: -20%; left: -20%; width: 70vw; height: 70vw; background: var(--accent-primary); }
-        .blob-2 { bottom: -20%; right: -20%; width: 80vw; height: 80vw; background: var(--accent-secondary); animation-delay: -5s; }
-        
-        .grid-bg {
+        /* Moving Grid Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200vw;
+            height: 200vh;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 50px 50px;
-            background-image: linear-gradient(to right, var(--accent-primary) 1px, transparent 1px),
-                              linear-gradient(to bottom, var(--accent-primary) 1px, transparent 1px);
-            opacity: var(--grid-opacity);
-            transform: perspective(800px) rotateX(15deg) scale(1.5);
-            transform-origin: top center;
-            animation: var(--anim-grid);
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 20s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
         }
 
-        /* --- COMPONENT STYLES --- */
-        .glass-panel {
-            background: var(--bg-panel);
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px); }
+        }
+
+        /* Typography Override for Headers */
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        
+        .tab, .btn-primary, .btn-secondary {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Glass Cards with Breathing Glow */
+        .card {
+            background: var(--glass-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color);
-            border-radius: 1rem;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .glass-panel:hover {
-            border-color: rgba(var(--accent-primary-rgb), 0.4);
-            box-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.15);
-        }
-
-        .input-tech {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 0.5rem;
-            padding: 0.6rem 0.8rem;
-            width: 100%;
-            transition: all 0.2s;
-        }
-        .input-tech:focus {
-            outline: none;
-            animation: pulse-border 2s infinite;
-            border-color: var(--accent-primary);
-        }
-        /* Placeholder specific style for "muted" look */
-        .input-tech.placeholder-active {
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        .btn-tech {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            transition: all 0.3s;
-            box-shadow: 0 0 10px rgba(var(--accent-primary-rgb), 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all var(--transition-speed) ease;
             position: relative;
             overflow: hidden;
+            animation: breathe 8s ease-in-out infinite;
         }
-        .btn-tech:hover {
-            box-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.6);
-            transform: translateY(-1px) scale(1.02);
+
+        @keyframes breathe {
+            0%, 100% { box-shadow: 0 0 15px var(--glass-border); border-color: var(--glass-border); }
+            50% { box-shadow: 0 0 25px var(--accent-glow); border-color: var(--accent-color); }
         }
-        .btn-tech-outline {
-            background: transparent;
-            border: 1px solid var(--accent-primary);
-            color: var(--accent-primary);
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            transition: all 0.2s;
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid var(--accent-color);
         }
-        .btn-tech-outline:hover { background: rgba(var(--accent-primary-rgb), 0.1); }
+
+        /* Inputs */
+        .input-field {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            transition: all 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: scale(1.01);
+        }
         
-        .nav-item {
-            display: flex; align-items: center; padding: 0.75rem 1rem;
-            border-radius: 0.5rem; color: var(--text-muted);
-            transition: all 0.2s; cursor: pointer;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: rgba(var(--accent-primary-rgb), 0.1);
-            color: var(--accent-primary);
-            border-left: 3px solid var(--accent-primary);
+        /* Dropdown/Select overrides for dark modes */
+        select.input-field option {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
         }
 
-        /* Table Styles */
-        .tech-table th { padding: 0.75rem; text-align: left; color: var(--accent-primary); border-bottom: 1px solid var(--border-color); font-size: 0.8rem; }
-        .tech-table td { padding: 0.75rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: top; font-size: 0.85rem; }
-        .tech-table tr:hover { background-color: rgba(var(--accent-primary-rgb), 0.05); }
-
-        /* ABG Formula Specific */
-        .result-card { background-color: var(--bg-input); border-left: 4px solid var(--accent-primary); padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; }
-        .result-card h4 { color: var(--accent-primary); font-weight: 600; }
-        .formula { font-family: monospace; background-color: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 0.25rem; color: var(--text-main); font-size: 0.8rem; margin-top: 0.5rem; white-space: pre-wrap; }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-        /* Toast - Enhanced Readability & Positioning */
-        #copy-alert {
-            position: fixed; bottom: 20px; right: 20px; z-index: 10000; 
-            background: var(--bg-panel); 
-            border: 1px solid var(--accent-primary);
-            color: var(--text-main); /* Uses theme text color explicitly */
-            padding: 1.5rem; border-radius: 0.75rem;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; gap: 0.5rem;
-            max-width: 80vw; width: auto; min-width: 300px;
-            transform: translateY(150%); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(20px);
-            word-break: break-word; white-space: pre-wrap;
+        /* Buttons */
+        .btn-primary {
+            background-image: linear-gradient(90deg, var(--btn-grad-start), var(--btn-grad-end));
+            color: var(--btn-text);
+            padding: 0.85rem 2rem;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px var(--accent-glow);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
-        #copy-alert.show { transform: translateY(0); opacity: 1; }
-        .fade-in { animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 25px var(--accent-glow);
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--text-primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-color);
+            color: var(--btn-text);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Navigation Tabs */
+        .main-tab-nav {
+            background: var(--input-bg);
+            border-radius: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .main-tab-nav button {
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        .main-tab-nav button:hover {
+            color: var(--accent-color);
+            opacity: 1;
+        }
+
+        .main-tab-nav button.active {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            opacity: 1;
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .sub-tab-nav button {
+            color: var(--text-secondary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 99px;
+            transition: all 0.3s;
+        }
+
+        .sub-tab-nav button.active {
+            background: var(--accent-color);
+            color: var(--btn-text);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .theme-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: transform 0.2s;
+        }
+        .theme-dot:hover { transform: scale(1.2); }
+        .theme-dot.obsidian { background: linear-gradient(135deg, #000, #d4af37); }
+        .theme-dot.violet { background: linear-gradient(135deg, #f3e8ff, #8b5cf6); }
+        .theme-dot.neon { background: linear-gradient(135deg, #0f172a, #0ea5e9); }
+        .theme-dot.random { background: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red); border-radius: 4px; }
+
+        /* Animations */
+        .animated-result {
+            display: none;
+            animation: holographFade 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes holographFade {
+            0% { opacity: 0; transform: scaleY(0.8) translateY(20px); filter: blur(10px); }
+            100% { opacity: 1; transform: scaleY(1) translateY(0); filter: blur(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+
+        /* Text Gradients */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, var(--accent-color), var(--text-primary));
+        }
+
+        /* Modal */
+        #customModal {
+            backdrop-filter: blur(5px);
+        }
+        #customModal .modal-content {
+            background: var(--bg-color);
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 50px var(--accent-glow);
+            color: var(--text-primary);
+        }
     </style>
 </head>
-<body class="h-screen w-screen flex overflow-hidden text-sm md:text-base">
+<body>
 
-    <!-- Background Layers -->
-    <div class="bg-layer" style="opacity: var(--aurora-opacity);">
-        <div class="aurora-blob blob-1"></div>
-        <div class="aurora-blob blob-2"></div>
+    <div class="cyber-grid"></div>
+
+    <!-- Theme Switcher UI -->
+    <div class="theme-switcher">
+        <div class="theme-dot obsidian" onclick="setTheme('obsidian')" title="Obsidian Prime"></div>
+        <div class="theme-dot violet" onclick="setTheme('violet')" title="Ethereal Violet"></div>
+        <div class="theme-dot neon" onclick="setTheme('neon')" title="Neon Aurora"></div>
+        <div class="theme-dot random" onclick="setRandomTheme()" title="Randomize Flux"></div>
     </div>
-    <div class="bg-layer grid-bg"></div>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 glass-panel flex flex-col m-2 h-[calc(100vh-1rem)] transform transition-transform duration-300 -translate-x-full md:translate-x-0 absolute md:relative z-30">
-        <div class="p-6 border-b border-[var(--border-color)] flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <i class="ph-fill ph-asterisk-simple text-3xl" style="color: var(--accent-primary)"></i>
-                <div>
-                    <h1 class="text-xl font-bold leading-none tracking-wider">MED-OS</h1>
-                    <span class="text-[10px] text-[var(--text-muted)] tracking-widest uppercase">Clinical V.4.1</span>
-                </div>
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl relative z-10">
+        <header class="text-center mb-10 pt-10">
+            <div class="inline-flex items-center gap-4 animate-pulse">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12" style="color: var(--accent-color)">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5v-5.714c0-.597-.237-1.17-.659-1.591L14.25 3.104" />
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+                <h1 class="text-5xl md:text-6xl font-black text-gradient uppercase">
+                    MedDose Pro
+                </h1>
             </div>
-            <button id="close-sidebar" class="md:hidden text-[var(--text-muted)]"><i class="ph ph-x text-2xl"></i></button>
-        </div>
-
-        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
-            <div class="nav-item active" data-target="orders"><i class="ph ph-pill text-xl mr-3"></i> ICU Orders</div>
-            <div class="nav-item" data-target="abg"><i class="ph ph-flask text-xl mr-3"></i> ABG Analysis</div>
-            <div class="nav-item" data-target="betablocker"><i class="ph ph-heartbeat text-xl mr-3"></i> Beta-Blocker</div>
-            <div class="nav-item" data-target="calcium"><i class="ph ph-atom text-xl mr-3"></i> Calcium Calc</div>
-            <div class="nav-item" data-target="calsulin"><i class="ph ph-drop text-xl mr-3"></i> Insulin Dosing</div>
-            <div class="nav-item" data-target="nutrition"><i class="ph ph-bowl-food text-xl mr-3"></i> Nutrition Note</div>
-            <div class="nav-item" data-target="steroid"><i class="ph ph-shield-plus text-xl mr-3"></i> Steroid Equiv.</div>
-        </nav>
-
-        <div class="p-4 border-t border-[var(--border-color)]">
-            <div class="text-[10px] text-[var(--text-muted)] text-center font-mono">
-                Wasupon Srisatit, MD<br>
-                Internal Medicine<br>
-                Rajavithi Hospital
-            </div>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-screen relative z-10">
-        <!-- Header -->
-        <header class="glass-panel m-2 mb-0 p-4 flex justify-between items-center relative z-50">
-            <div class="flex items-center gap-4">
-                <button id="sidebar-toggle" class="md:hidden text-[var(--text-main)]"><i class="ph ph-list text-2xl"></i></button>
-                <h2 id="page-title" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)]">ICU Orders</h2>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="relative group">
-                    <button class="btn-tech-outline flex items-center gap-2 text-xs">
-                        <i class="ph ph-paint-brush-broad"></i> Theme
-                    </button>
-                    <!-- Theme Dropdown: Increased Z-index to 100 -->
-                    <div class="absolute right-0 mt-2 w-56 glass-panel shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform origin-top-right z-[100]">
-                        <div class="p-2 space-y-1">
-                            <button onclick="setTheme('neon')" class="w-full text-left px-3 py-2 rounded text-sm hover:bg-[var(--accent-primary)] hover:text-black transition-colors flex items-center"><span class="w-3 h-3 rounded-full bg-cyan-400 mr-2 shadow-[0_0_10px_cyan]"></span> Neon Aurora</button>
-                            <button onclick="setTheme('obsidian')" class="w-full text-left px-3 py-2 rounded text-sm hover:bg-[var(--accent-primary)] hover:text-white transition-colors flex items-center"><span class="w-3 h-3 rounded-full bg-slate-800 border border-slate-500 mr-2"></span> Obsidian Grid</button>
-                            <button onclick="setTheme('pearl')" class="w-full text-left px-3 py-2 rounded text-sm hover:bg-[var(--accent-primary)] hover:text-white transition-colors flex items-center"><span class="w-3 h-3 rounded-full bg-fuchsia-200 border border-fuchsia-400 mr-2"></span> Gold Pearl</button>
-                            <div class="h-px bg-[var(--border-color)] my-1"></div>
-                            <button onclick="setRandomTheme()" class="w-full text-left px-3 py-2 rounded text-sm hover:bg-[var(--accent-primary)] hover:text-black transition-colors flex items-center font-bold"><i class="ph ph-magic-wand mr-2"></i> Quantum Random</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <p class="mt-3 text-lg font-mono tracking-widest" style="color: var(--text-secondary)">OPD TACTICAL MEDICATION SYSTEM V.2.0</p>
         </header>
 
-        <!-- Content Area -->
-        <div id="content-area" class="flex-1 overflow-y-auto p-4 space-y-8 pb-20 z-0 relative">
+        <!-- Date Calculator Card -->
+        <div class="card">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 border-b pb-4" style="border-color: var(--glass-border)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Temporal Synchronization
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+                <div>
+                    <label for="currentDate" class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Current Date</label>
+                    <input type="date" id="currentDate" class="input-field opacity-75 cursor-not-allowed" readonly>
+                </div>
+                <div>
+                    <label for="appointmentDate" class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Next Appointment</label>
+                    <input type="date" id="appointmentDate" class="input-field">
+                </div>
+                <div>
+                    <label for="totalWeeks" class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Supply Weeks</label>
+                    <input type="number" id="totalWeeks" class="input-field" min="0" step="any" placeholder="4">
+                </div>
+                <div>
+                    <label for="totalDays" class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Supply Days</label>
+                    <input type="number" id="totalDays" class="input-field" min="1" placeholder="30">
+                </div>
+            </div>
+        </div>
 
-            <!-- PAGE 1: ICU ORDERS -->
-            <div id="orders" class="content-page fade-in">
-                <!-- Section: Sedation -->
-                <section class="space-y-4 mb-8">
-                    <h3 class="text-lg font-bold border-b border-[var(--border-color)] pb-2 text-[var(--accent-secondary)]">Sedation & Analgesia</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                        <!-- Cards -->
-                        <div class="glass-panel p-4 flex flex-col gap-3 hover:border-[var(--accent-primary)] transition-colors group">
-                            <div class="flex justify-between items-start"><h5 class="font-bold group-hover:text-[var(--accent-primary)] transition-colors">Midazolam</h5><i class="ph ph-moon-stars text-[var(--accent-secondary)]"></i></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Conc (ratio)</label><input id="midazolam-concentration" class="input-tech" value="2:1" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Rate (mL/hr)</label><input id="midazolam-rate" class="input-tech" value="5" /></div>
-                            <button class="btn-tech mt-auto copy-btn w-full flex justify-center items-center gap-2" data-id="midazolam"><i class="ph ph-copy"></i> Copy Order</button>
-                        </div>
-                        <div class="glass-panel p-4 flex flex-col gap-3 hover:border-[var(--accent-primary)] transition-colors group">
-                            <div class="flex justify-between items-start"><h5 class="font-bold group-hover:text-[var(--accent-primary)] transition-colors">1% Propofol</h5><i class="ph ph-drop text-[var(--accent-secondary)]"></i></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Conc (ratio)</label><input id="propofol-concentration" class="input-tech" value="10:1" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Rate (mL/hr)</label><input id="propofol-rate" class="input-tech" value="5" /></div>
-                            <button class="btn-tech mt-auto copy-btn w-full flex justify-center items-center gap-2" data-id="propofol"><i class="ph ph-copy"></i> Copy Order</button>
-                        </div>
-                        <div class="glass-panel p-4 flex flex-col gap-3 hover:border-[var(--accent-primary)] transition-colors group">
-                            <div class="flex justify-between items-start"><h5 class="font-bold group-hover:text-[var(--accent-primary)] transition-colors">Dexmedetomidine</h5><i class="ph ph-brain text-[var(--accent-secondary)]"></i></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Conc (ratio)</label><input id="dexmed-concentration" class="input-tech" value="4:1" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Rate (mL/hr)</label><input id="dexmed-rate" class="input-tech" value="10" /></div>
-                            <button class="btn-tech mt-auto copy-btn w-full flex justify-center items-center gap-2" data-id="dexmed"><i class="ph ph-copy"></i> Copy Order</button>
-                        </div>
-                         <div class="glass-panel p-4 flex flex-col gap-3 hover:border-[var(--accent-primary)] transition-colors group">
-                            <div class="flex justify-between items-start"><h5 class="font-bold group-hover:text-[var(--accent-primary)] transition-colors">Fentanyl</h5><i class="ph ph-bandaids text-[var(--accent-secondary)]"></i></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Conc (ratio)</label><input class="input-tech opacity-50" value="10:1" disabled /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Rate (mL/hr)</label><input id="fentanyl-rate" class="input-tech" value="5" /></div>
-                            <button class="btn-tech mt-auto copy-btn w-full flex justify-center items-center gap-2" data-id="fentanyl"><i class="ph ph-copy"></i> Copy Order</button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Section: Vent (Original Logic) -->
-                <section class="space-y-4 mb-8">
-                    <h3 class="text-lg font-bold border-b border-[var(--border-color)] pb-2 text-[var(--accent-secondary)]">Mechanical Ventilation</h3>
-                    <div class="glass-panel p-6 max-w-3xl">
-                        <h5 class="text-xl font-semibold mb-4">Ventilator Settings</h5>
-                        <div class="grid grid-cols-2 md:grid-cols-2 gap-4 mb-4">
-                            <div class="col-span-2 md:col-span-2"><label class="text-xs text-[var(--text-muted)]">Mode</label><select id="vent-mode" class="input-tech"><option>VCV</option><option>PCV</option><option>SIMV</option><option>PSV</option></select></div>
-                            <div class="vt-field"><label class="text-xs text-[var(--text-muted)]">VT (mL)</label><input id="vent-VT" class="input-tech" value="450" /></div>
-                            <div class="ip-field hidden"><label class="text-xs text-[var(--text-muted)]">IP (cmH₂O)</label><input id="vent-IP" class="input-tech" value="20" /></div>
-                            <div class="ps-field hidden"><label class="text-xs text-[var(--text-muted)]">PS (cmH₂O)</label><input id="vent-PS" class="input-tech" value="10" /></div>
-                            <div class="rr-field"><label class="text-xs text-[var(--text-muted)]">RR (/min)</label><input id="vent-RR" class="input-tech" value="20" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Ti (s)</label><input id="vent-Ti" class="input-tech" value="1.0" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">FT (L/min)</label><input id="vent-FT" class="input-tech" value="2" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">PEEP</label><input id="vent-PEEP" class="input-tech" value="5" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">FiO₂</label><input id="vent-FiO2" class="input-tech" value="0.4" /></div>
-                        </div>
-                        <button class="btn-tech copy-btn w-full flex justify-center items-center gap-2" data-id="vent"><i class="ph ph-copy"></i> Copy Ventilator Order</button>
-                    </div>
-                </section>
-
-                <!-- Section: Vaso -->
-                <section class="space-y-4 mb-8">
-                    <h3 class="text-lg font-bold border-b border-[var(--border-color)] pb-2 text-[var(--accent-secondary)]">Vasopressors</h3>
-                    <div class="glass-panel p-4 mb-4 flex items-center gap-4 max-w-md border-l-4 border-[var(--accent-primary)]">
-                        <i class="ph ph-scales text-2xl text-[var(--accent-primary)]"></i>
-                        <div class="flex-1">
-                            <label class="text-xs text-[var(--text-muted)] uppercase tracking-wide font-bold">Patient Body Weight (kg)</label>
-                            <input id="vasopressors-weight" type="number" class="input-tech text-lg font-bold text-[var(--accent-primary)]" placeholder="e.g. 70" />
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                         <!-- Norepi -->
-                         <div class="glass-panel p-4 flex flex-col gap-3 group">
-                            <h5 class="font-bold text-[var(--accent-primary)]">Norepinephrine</h5>
-                            <div class="norepi-btn-group grid grid-cols-2 gap-2 text-xs">
-                                <button class="btn-tech-outline preset-btn" data-ratio="4:250">4:250</button>
-                                <button class="btn-tech-outline preset-btn" data-ratio="4:100">4:100</button>
-                                <button class="btn-tech-outline preset-btn" data-ratio="8:100">8:100</button>
-                                <button class="btn-tech-outline preset-btn" data-ratio="16:100">16:100</button>
-                            </div>
-                            <input type="hidden" id="norepi-concentration" value="4:250">
-                            <div><label class="text-xs text-[var(--text-muted)]">Rate (mL/hr)</label><input id="norepi-rate" class="input-tech" placeholder="20" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Titration (ml/hr)</label><input id="norepi-titrate" class="input-tech" value="1-2" /></div>
-                            <button class="btn-tech mt-auto copy-btn w-full flex justify-center items-center gap-2" data-id="norepi"><i class="ph ph-copy"></i> Copy Order</button>
-                        </div>
-                        <!-- Epi -->
-                        <div class="glass-panel p-4 flex flex-col gap-3 group">
-                            <h5 class="font-bold text-[var(--accent-primary)]">Epinephrine</h5>
-                            <div class="epi-btn-group text-xs">
-                                <button class="btn-tech-outline preset-btn w-full" data-ratio="1:10">1:10</button>
-                            </div>
-                            <input type="hidden" id="epi-concentration" value="1:10">
-                            <div><label class="text-xs text-[var(--text-muted)]">Rate (mL/hr)</label><input id="epi-rate" class="input-tech" placeholder="10" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Titration (ml/hr)</label><input id="epi-titrate" class="input-tech" value="1-2" /></div>
-                            <button class="btn-tech mt-auto copy-btn w-full flex justify-center items-center gap-2" data-id="epi"><i class="ph ph-copy"></i> Copy Order</button>
-                        </div>
-                        <!-- Dopamine -->
-                        <div class="glass-panel p-4 flex flex-col gap-3 group">
-                            <h5 class="font-bold text-[var(--accent-primary)]">Dopamine</h5>
-                            <div class="dopamine-btn-group text-xs"><button class="btn-tech-outline preset-btn w-full" data-ratio="2:1">2:1</button></div>
-                            <input type="hidden" id="dopamine-concentration" value="2:1">
-                            <div><label class="text-xs text-[var(--text-muted)]">Rate (mL/hr)</label><input id="dopamine-rate" class="input-tech" placeholder="15" /></div>
-                            <button class="btn-tech mt-auto copy-btn w-full flex justify-center items-center gap-2" data-id="dopamine"><i class="ph ph-copy"></i> Copy Order</button>
-                        </div>
-                         <!-- Dobutamine -->
-                         <div class="glass-panel p-4 flex flex-col gap-3 group">
-                            <h5 class="font-bold text-[var(--accent-primary)]">Dobutamine</h5>
-                            <div class="dobutamine-btn-group text-xs"><button class="btn-tech-outline preset-btn w-full" data-ratio="2:1">2:1</button></div>
-                            <input type="hidden" id="dobutamine-concentration" value="2:1">
-                            <div><label class="text-xs text-[var(--text-muted)]">Rate (mL/hr)</label><input id="dobutamine-rate" class="input-tech" placeholder="10" /></div>
-                            <button class="btn-tech mt-auto copy-btn w-full flex justify-center items-center gap-2" data-id="dobutamine"><i class="ph ph-copy"></i> Copy Order</button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Section: Enteral (BD Feed) -->
-                <section class="space-y-4 mb-8">
-                    <h3 class="text-lg font-bold border-b border-[var(--border-color)] pb-2 text-[var(--accent-secondary)]">Enteral Nutrition</h3>
-                    <div class="glass-panel p-4 max-w-lg">
-                        <h5 class="font-bold mb-4">BD Feed Order</h5>
-                        <div class="space-y-2">
-                            <div><label class="text-xs text-[var(--text-muted)]">Concentration (ratio)</label><input id="bd_feed-concentration" class="input-tech" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Volume (mL)</label><input id="bd_feed-volume" class="input-tech" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Feeds/day</label><input id="bd_feed-frequency" class="input-tech" value="4" /></div>
-                            <div><label class="text-xs text-[var(--text-muted)]">Flush Vol (mL)</label><input id="bd_feed-flush" class="input-tech" /></div>
-                        </div>
-                        <button class="btn-tech mt-4 copy-btn w-full flex justify-center items-center gap-2" data-id="bd_feed"><i class="ph ph-copy"></i> Copy Feed Order</button>
-                    </div>
-                </section>
-
-                <!-- Section: Antibiotics & Renal -->
-                <section class="space-y-4 mb-8">
-                     <h3 class="text-lg font-bold border-b border-[var(--border-color)] pb-2 text-[var(--accent-secondary)]">Antibiotics & Renal Dosing</h3>
-                     <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                        <!-- CrCl Calc -->
-                        <div class="lg:col-span-2 glass-panel p-6 space-y-4">
-                            <h5 class="font-bold flex items-center gap-2"><i class="ph ph-calculator text-[var(--accent-primary)]"></i> Cockcroft-Gault CrCl</h5>
-                            <div class="space-y-4">
-                                <div><label class="text-xs text-[var(--text-muted)]">Age (years)</label><input id="crcl-age" type="number" class="input-tech" placeholder="e.g., 65"></div>
-                                <div><label class="text-xs text-[var(--text-muted)]">Weight (kg)</label><input id="crcl-weight" type="number" class="input-tech" placeholder="e.g., 70"></div>
-                                <div><label class="text-xs text-[var(--text-muted)]">Serum Creatinine (mg/dL)</label><input id="crcl-creatinine" type="number" class="input-tech" placeholder="e.g., 1.2"></div>
-                                <div><label class="text-xs text-[var(--text-muted)]">Sex</label><select id="crcl-sex" class="input-tech"><option value="male">Male</option><option value="female">Female</option></select></div>
-                            </div>
-                            <button id="calculate-crcl-btn" class="btn-tech w-full">Calculate CrCl</button>
-                            <div id="crcl-result" class="text-center text-3xl font-bold text-[var(--accent-primary)] py-2"></div>
-                        </div>
-
-                        <!-- ATB Dosing -->
-                         <div class="lg:col-span-3 glass-panel p-6 space-y-4">
-                            <h5 class="font-bold flex items-center gap-2"><i class="ph ph-virus text-[var(--accent-primary)]"></i> Antibiotic Dosing Guide</h5>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div><label class="text-xs text-[var(--text-muted)]">Antibiotic</label><select id="atb-select" class="input-tech"><option selected disabled>Select an Antibiotic...</option><option value="Meropenem">Meropenem</option><option value="Piperacillin/Tazobactam">Piperacillin/Tazobactam</option><option value="Levofloxacin">Levofloxacin</option><option value="Ceftazidime">Ceftazidime</option><option value="Imipenem/Cilastatin">Imipenem/Cilastatin</option><option value="IV Fosfomycin">IV Fosfomycin</option><option value="Colistin">Colistin</option></select></div>
-                                <div><label class="text-xs text-[var(--text-muted)]">Dose Tier / Indication</label><select id="atb-dose-tier" class="input-tech"></select></div>
-                                <div id="pathogen-container" class="hidden"><label class="text-xs text-[var(--text-muted)]">Pathogen</label><select id="atb-pathogen" class="input-tech"></select></div>
-                                <div><label class="text-xs text-[var(--text-muted)]">CrCl (mL/min)</label><input id="atb-crcl" type="number" class="input-tech bg-opacity-20" readonly></div>
-                                <div class="md:col-span-2"><label class="text-xs text-[var(--text-muted)]">RRT Modality</label><select id="atb-rrt" class="input-tech"><option value="none" selected>None</option><option value="IHD">Hemodialysis (IHD)</option><option value="PD">Peritoneal Dialysis (PD)</option><option value="CRRT_II">CRRT (Intermittent Infusion)</option><option value="CRRT_CI">CRRT (Continuous Infusion)</option><option value="PIRRT_SLED">PIRRT / SLED</option></select></div>
-                            </div>
-                            <div class="flex gap-3 mt-4">
-                                <button id="calculate-atb-dose-btn" class="btn-tech flex-1">Calculate Maintenance Dose</button>
-                                <button id="show-loading-dose-btn" class="btn-tech-outline flex-1">Show Loading Dose</button>
-                            </div>
-                            <div id="atb-dose-result" class="p-4 rounded border border-[var(--border-color)] bg-[var(--bg-input)] min-h-[5.5rem] text-sm flex items-center justify-center text-center font-mono font-bold text-lg"></div>
-                         </div>
-                     </div>
-                     <!-- Full Reference Table -->
-                     <h3 class="text-xl font-semibold mb-4 mt-8">Antibiotic Reference Table</h3>
-                     <div class="glass-panel p-4 mt-4 overflow-x-auto">
-                        <table class="w-full text-sm text-left tech-table">
-                            <thead class="text-[var(--accent-primary)] font-bold">
-                                <tr><th class="whitespace-nowrap">Antibiotic</th><th>Indication / Dose Tier</th><th>Loading Dose</th><th>CrCl (mL/min) or RRT Modality</th><th>Adjusted Maintenance Dose & Regimen</th></tr>
-                            </thead>
-                            <tbody id="atb-reference-tbody" class="text-[var(--text-main)] opacity-90 text-xs"></tbody>
-                        </table>
-                     </div>
-                </section>
+        <!-- Main Calculator Section -->
+        <div>
+            <div class="main-tab-nav flex flex-wrap justify-center md:justify-start items-center gap-4 mb-8">
+                <button id="tab-simple" class="tab active px-4 py-2 text-lg" onclick="switchTab('simple')">Simple Prescription</button>
+                <button id="tab-warfarin" class="tab px-4 py-2 text-lg" onclick="switchTab('warfarin')">Warfarin Calc</button>
+                <button id="tab-inr" class="tab px-4 py-2 text-lg" onclick="switchTab('inr')">INR Adjust</button>
             </div>
 
-            <!-- PAGE 2: ABG -->
-            <div id="abg" class="content-page hidden fade-in max-w-4xl mx-auto">
-                <div class="glass-panel p-8 space-y-6">
-                    <div class="text-center">
-                        <i class="ph ph-lungs text-4xl text-[var(--accent-primary)] animate-pulse"></i>
-                        <h2 class="text-3xl font-bold mt-2">ABG Analysis Calculator</h2>
-                        <p class="text-[var(--text-muted)] mt-1 text-sm">Comprehensive Acid-Base Evaluation</p>
-                    </div>
-                    
-                    <div id="abgErrorMessage" class="hidden p-3 bg-red-900/50 border border-red-500 text-red-200 rounded text-sm text-center">
-                        <span class="font-bold">Error:</span> <span id="abgErrorMessageText"></span>
+            <!-- Simple Prescription Calculator -->
+            <div id="calculator-simple">
+                <div class="card">
+                     <label class="block text-sm font-bold uppercase tracking-wider mb-4" style="color: var(--accent-color)">Prescription Protocol</label>
+                     <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                         <label class="flex-1 flex items-center space-x-3 p-4 border rounded-xl cursor-pointer transition-all hover:bg-white/5" style="border-color: var(--glass-border)">
+                             <input type="radio" name="prescriptionType" value="daily" class="form-radio text-sky-500 w-5 h-5 focus:ring-0" checked onchange="togglePrescriptionType(this.value)">
+                             <span class="font-medium">Standard Daily Dose</span>
+                         </label>
+                         <label class="flex-1 flex items-center space-x-3 p-4 border rounded-xl cursor-pointer transition-all hover:bg-white/5" style="border-color: var(--glass-border)">
+                             <input type="radio" name="prescriptionType" value="weekly" class="form-radio text-sky-500 w-5 h-5 focus:ring-0" onchange="togglePrescriptionType(this.value)">
+                             <span class="font-medium">Complex Weekly Cycle</span>
+                         </label>
+                     </div>
+
+                    <!-- Container for the standard daily input -->
+                    <div id="daily-dose-container">
+                        <label for="simplePrescription" class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Input Formula</label>
+                        <input type="text" id="simplePrescription" placeholder="Syntax: 1x2, 12, or 0.5*3" class="input-field">
+                        <p id="simplePrescriptionError" class="error-message text-red-400 mt-2 hidden text-sm">Invalid syntax. Use '1x2' or numeric value.</p>
                     </div>
 
-                    <h2 class="text-lg font-semibold text-[var(--accent-secondary)] border-b border-[var(--border-color)] pb-2">Patient Data</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-                        <div><label class="text-xs text-[var(--text-muted)] font-bold">pH *</label><input id="ph" type="number" step="0.01" class="input-tech" placeholder="e.g. 7.25"></div>
-                        <div><label class="text-xs text-[var(--text-muted)] font-bold">PaCO₂ (mmHg) *</label><input id="paco2" type="number" class="input-tech text-lg" placeholder="e.g. 25"></div>
-                        <div><label class="text-xs text-[var(--text-muted)] font-bold">HCO₃⁻ (mEq/L) *</label><input id="hco3" type="number" class="input-tech text-lg" placeholder="e.g. 12"></div>
-                        <div><label class="text-xs text-[var(--text-muted)]">Na⁺ (Optional)</label><input id="na" type="number" class="input-tech" placeholder="e.g. 140"></div>
-                        <div><label class="text-xs text-[var(--text-muted)]">Cl⁻ (Optional)</label><input id="cl" type="number" class="input-tech" placeholder="e.g. 100"></div>
-                        <div><label class="text-xs text-[var(--text-muted)]">Albumin (Optional)</label><input id="albumin" type="number" step="0.1" class="input-tech" placeholder="e.g. 4.0"></div>
-                    </div>
-
-                    <div id="respiratoryTiming" class="hidden p-4 border border-[var(--border-color)] rounded bg-[var(--bg-input)]">
-                        <h3 class="text-md font-semibold mb-2">Respiratory Disorder Timing</h3>
-                        <div class="flex items-center space-x-4">
-                            <label class="inline-flex items-center mr-4 cursor-pointer"><input type="radio" name="timing" value="acute" class="mr-2 accent-[var(--accent-primary)]"> Acute</label>
-                            <label class="inline-flex items-center cursor-pointer"><input type="radio" name="timing" value="chronic" class="mr-2 accent-[var(--accent-primary)]"> Chronic (>72 hrs)</label>
+                    <!-- Container for the new weekly/day-specific input -->
+                    <div id="weekly-dose-container" class="hidden">
+                        <label class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Specific Regimen</label>
+                        <div id="specific-day-rows" class="space-y-3 mb-4">
+                            <!-- JS will populate this -->
                         </div>
+                        <button onclick="addSpecificDayRow()" class="btn-secondary text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            Add Vector
+                        </button>
                     </div>
 
-                    <button onclick="analyzeABG()" class="btn-tech w-full py-3 text-lg tracking-widest uppercase shadow-lg">Analyze ABG</button>
-
-                    <div id="abgResultsSection" class="hidden space-y-4 pt-4 border-t border-[var(--border-color)]">
-                        <h2 class="text-xl font-bold text-white border-b border-[var(--border-color)] pb-2">Analysis Results</h2>
-                        <div id="primaryDisorderResult"></div>
-                        <div id="anionGapResult"></div>
-                        <div id="compensationResult"></div>
-                        <div class="glass-panel p-4 border border-[var(--accent-secondary)] bg-[var(--accent-secondary)]/5">
-                            <h4 class="font-bold text-[var(--accent-secondary)] uppercase text-sm mb-2">Final Interpretation</h4>
-                            <p id="summaryText" class="text-lg font-medium"></p>
+                    <!-- Shared Calculate Button -->
+                    <div class="mt-8 pt-6 border-t" style="border-color: var(--glass-border)">
+                         <button onclick="calculateSimpleDosage()" class="btn-primary w-full md:w-auto text-lg shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 3h.008v.008H8.25v-.008zm0 3h.008v.008H8.25v-.008zm3-6h.008v.008H11.25v-.008zm0 3h.008v.008H11.25v-.008zm0 3h.008v.008H11.25v-.008zm3-6h.008v.008H14.25v-.008zm0 3h.008v.008H14.25v-.008zM4.5 12.75a.75.75 0 01.75-.75h13.5a.75.75 0 010 1.5H5.25a.75.75 0 01-.75-.75z" /></svg>
+                            Execute Calculation
+                        </button>
+                    </div>
+                </div>
+                <div id="simpleResult" class="animated-result">
+                    <div class="card result-card">
+                       <h3 class="font-bold text-2xl mb-6" style="color: var(--accent-color)">Analysis Complete</h3>
+                       <div class="flex flex-col md:flex-row gap-6 text-center">
+                           <div class="flex-1 p-6 rounded-2xl border transition-transform hover:scale-105" style="background: rgba(255,255,255,0.05); border-color: var(--glass-border)">
+                               <p id="simpleDailyDoseLabel" class="text-sm font-semibold uppercase tracking-widest opacity-70">Tablets / Day</p>
+                               <p id="simpleDailyTablets" class="font-black text-6xl mt-2 font-mono" style="text-shadow: 0 0 20px var(--accent-glow)"></p>
+                           </div>
+                           <div class="flex-1 p-6 rounded-2xl border transition-transform hover:scale-105" style="background: rgba(255,255,255,0.05); border-color: var(--glass-border)">
+                               <p class="text-sm font-semibold uppercase tracking-widest opacity-70">Total Supply</p>
+                               <p id="simpleTotalTablets" class="font-black text-6xl mt-2 font-mono" style="text-shadow: 0 0 20px var(--accent-glow)"></p>
+                           </div>
+                       </div>
+                       <div id="simpleWeeklyBreakdown" class="hidden mt-6 p-4 rounded-xl border border-dashed" style="border-color: var(--accent-color)">
+                            <h4 class="font-semibold mb-2 opacity-80">Weekly Cycle Map:</h4>
+                            <p id="simpleWeeklyBreakdownText" class="text-lg font-mono"></p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- PAGE 3: BETA BLOCKER -->
-            <div id="betablocker" class="content-page hidden fade-in max-w-3xl mx-auto">
-                 <div class="glass-panel p-8 space-y-6">
-                    <h2 class="text-2xl font-bold flex items-center gap-3"><i class="ph ph-heart-break text-[var(--accent-primary)]"></i> Beta-Blocker Equivalence Calculator</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-xs text-[var(--text-muted)]">Convert From</label>
-                            <select id="bb_drug" class="input-tech">
-                                <option value="atenolol">Atenolol</option>
-                                <option value="bisoprolol">Bisoprolol</option>
-                                <option value="carvedilol">Carvedilol</option>
-                                <option value="metoprolol_t" selected>Metoprolol Tartrate</option>
-                                <option value="metoprolol_s">Metoprolol Succinate (ER)</option>
-                                <option value="nebivolol">Nebivolol</option>
-                                <option value="propranolol">Propranolol</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-xs text-[var(--text-muted)]">Total Daily Dose (mg)</label>
-                            <input type="number" id="bb_dose" class="input-tech" placeholder="e.g. 100">
-                        </div>
+            <!-- Warfarin Calculator -->
+            <div id="calculator-warfarin" class="hidden">
+                <div class="card">
+                    <div class="p-4 rounded-xl mb-6 flex items-start gap-3 border" style="background: rgba(var(--accent-color), 0.1); border-color: var(--glass-border)">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 shrink-0"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+                        <p class="text-sm font-medium opacity-80">Optimization Algorithm Active: Prioritizes 2mg, 3mg, 5mg combinations for maximum patient adherence (minimal pill fragmentation).</p>
                     </div>
-                    <button onclick="calculateBetaBlockerEquivalence()" class="btn-tech w-full">Calculate</button>
                     
-                    <div id="bbErrorMessage" class="hidden text-red-400 text-center"></div>
-                    <div id="bbResultsSection" class="hidden space-y-2 pt-4">
-                        <h4 class="text-[var(--accent-secondary)] font-bold uppercase tracking-wider text-sm mb-2">Equivalent Daily Doses</h4>
-                        <div id="bbResultsList" class="space-y-2"></div>
+                    <div class="flex justify-center border-b mb-8 sub-tab-nav pb-4" style="border-color: var(--glass-border)">
+                         <button id="warfarin-tab-daily" class="tab active mx-2" onclick="switchWarfarinTab('daily')">Manual Daily Entry</button>
+                         <button id="warfarin-tab-twd" class="tab mx-2" onclick="switchWarfarinTab('twd')">Weekly Target (TWD)</button>
                     </div>
 
-                    <div class="mt-8 pt-4 border-t border-[var(--border-color)]">
-                        <h4 class="text-lg font-bold text-[var(--text-muted)] mb-4">Guideline-Directed Beta-Blocker Dosing for HFrEF</h4>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-xs tech-table">
-                                <thead class="text-[var(--accent-primary)]">
-                                    <tr><th class="p-2 text-left">Beta-Blocker</th><th class="p-2 text-left">Starting Dose</th><th class="p-2 text-left">Target Dose</th></tr>
+                    <div id="twd-input-section" class="mb-4 hidden">
+                        <label for="twdInput" class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Total Weekly Dose (mg)</label>
+                        <div class="flex items-center gap-4">
+                            <input type="number" id="twdInput" placeholder="e.g., 30.5" class="input-field text-2xl" min="0" step="0.5">
+                            <button onclick="distributeTWD()" class="btn-primary whitespace-nowrap">Find Combinations</button>
+                        </div>
+                    </div>
+                    
+                    <div id="twdOptionsContainer" class="hidden mt-6 space-y-4"></div>
+
+                    <div id="daily-dose-section">
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3"></div>
+                        <p id="dailyDoseError" class="error-message text-red-400 mt-4 hidden font-bold">Error: Impossible combination detected.</p>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t" style="border-color: var(--glass-border)">
+                        <button onclick="calculateWarfarinDosage()" class="btn-primary w-full md:w-auto shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.092 1.21-.138 2.43-.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" /></svg>
+                            Compute Logistics
+                        </button>
+                    </div>
+                </div>
+                <div id="warfarinResult" class="animated-result">
+                     <div class="card result-card">
+                        <h3 class="font-bold text-2xl mb-4" style="color: var(--accent-color)">Supply Manifest</h3>
+                        <div class="mt-4">
+                            <p class="font-medium opacity-80 mb-4">Total requirements for <span id="warfarinTotalDays" class="font-bold text-lg" style="color: var(--accent-color)"></span> days:</p>
+                            <div class="grid grid-cols-3 gap-6 mt-2 text-center">
+                                <div class="p-4 rounded-xl border relative overflow-hidden" style="background: rgba(255,255,255,0.05); border-color: var(--glass-border)">
+                                    <div class="absolute top-0 left-0 w-full h-1 bg-pink-500"></div>
+                                    <p class="text-xs font-bold uppercase tracking-widest opacity-60 mb-2">5mg (Pink)</p>
+                                    <p id="total5mg" class="font-black text-4xl"></p>
+                                </div>
+                                <div class="p-4 rounded-xl border relative overflow-hidden" style="background: rgba(255,255,255,0.05); border-color: var(--glass-border)">
+                                    <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+                                    <p class="text-xs font-bold uppercase tracking-widest opacity-60 mb-2">3mg (Blue)</p>
+                                    <p id="total3mg" class="font-black text-4xl"></p>
+                                </div>
+                                <div class="p-4 rounded-xl border relative overflow-hidden" style="background: rgba(255,255,255,0.05); border-color: var(--glass-border)">
+                                    <div class="absolute top-0 left-0 w-full h-1 bg-orange-400"></div>
+                                    <p class="text-xs font-bold uppercase tracking-widest opacity-60 mb-2">2mg (Orange)</p>
+                                    <p id="total2mg" class="font-black text-4xl"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8 overflow-x-auto rounded-lg border" style="border-color: var(--glass-border)">
+                            <table class="min-w-full text-left">
+                                <thead style="background: rgba(255,255,255,0.1)">
+                                    <tr>
+                                        <th class="p-4 font-bold text-sm uppercase tracking-wider">Day</th>
+                                        <th class="p-4 text-center font-bold text-sm uppercase tracking-wider">Dose (mg)</th>
+                                        <th class="p-4 text-center font-bold text-sm uppercase tracking-wider">5mg</th>
+                                        <th class="p-4 text-center font-bold text-sm uppercase tracking-wider">3mg</th>
+                                        <th class="p-4 text-center font-bold text-sm uppercase tracking-wider">2mg</th>
+                                    </tr>
                                 </thead>
-                                <tbody class="text-[var(--text-main)] opacity-80">
-                                    <tr><td class="p-2 font-bold">Bisoprolol</td><td class="p-2">1.25 mg once daily</td><td class="p-2">10 mg once daily</td></tr>
-                                    <tr><td class="p-2 font-bold">Carvedilol</td><td class="p-2">3.125 mg twice daily</td><td class="p-2">25 mg twice daily<br>(50 mg twice daily if weight > 85 kg)</td></tr>
-                                    <tr><td class="p-2 font-bold">Metoprolol Succinate (ER)</td><td class="p-2">12.5 - 25 mg once daily</td><td class="p-2">200 mg once daily</td></tr>
-                                </tbody>
+                                <tbody id="warfarinBreakdownTable" class="divide-y" style="divide-color: var(--glass-border)"></tbody>
                             </table>
                         </div>
                     </div>
-                 </div>
-            </div>
-
-            <!-- PAGE 4: CALCIUM -->
-            <div id="calcium" class="content-page hidden fade-in max-w-4xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Corrected Ca -->
-                    <div class="glass-panel p-6 space-y-4">
-                        <h3 class="text-lg font-bold text-[var(--accent-primary)]">Corrected Calcium (cCa)</h3>
-                        <div><label class="text-xs text-[var(--text-muted)]">Total Calcium (mg/dL)</label><input type="number" id="totalCalcium" class="input-tech" placeholder="e.g. 8.5"></div>
-                        <div><label class="text-xs text-[var(--text-muted)]">Albumin (g/dL)</label><input type="number" id="albumin_ca" class="input-tech" placeholder="e.g. 3.0"></div>
-                        <button onclick="calculateCorrectedCalcium()" class="btn-tech w-full">Calculate cCa</button>
-                        <div id="caErrorMessage" class="hidden text-red-400 text-xs"></div>
-                        <div id="correctedCalciumResult" class="hidden p-3 bg-[var(--bg-input)] rounded border-l-4 border-[var(--accent-primary)] font-bold text-center text-xl"></div>
-                    </div>
-
-                    <!-- Infusion Calc -->
-                    <div class="glass-panel p-6 space-y-4">
-                        <h3 class="text-lg font-bold text-[var(--accent-secondary)]">Calcium Gluconate Infusion</h3>
-                        <div class="space-y-3">
-                            <div class="flex gap-2 items-end">
-                                <div class="flex-1"><label class="text-[10px] text-[var(--text-muted)]">Infusion Rate (mg/kg/hr)</label><input id="infusion_rate" type="number" class="input-tech h-8 text-sm"></div>
-                                <button onclick="calculateInfusion('rate')" class="btn-tech-outline h-8 px-2 text-xs">Calc</button>
-                            </div>
-                            <div class="flex gap-2 items-end">
-                                <div class="flex-1"><label class="text-[10px] text-[var(--text-muted)]">Patient Weight (kg)</label><input id="infusion_weight" type="number" class="input-tech h-8 text-sm"></div>
-                                <button onclick="calculateInfusion('weight')" class="btn-tech-outline h-8 px-2 text-xs">Calc</button>
-                            </div>
-                            <div class="flex gap-2 items-end">
-                                <div class="flex-1"><label class="text-[10px] text-[var(--text-muted)]">10% Ca Gluconate (mL)</label><input id="infusion_caVolume" type="number" class="input-tech h-8 text-sm"></div>
-                                <button onclick="calculateInfusion('caVolume')" class="btn-tech-outline h-8 px-2 text-xs">Calc</button>
-                            </div>
-                             <div class="flex gap-2 items-end">
-                                <div class="flex-1"><label class="text-[10px] text-[var(--text-muted)]">Diluent Volume (mL)</label><input id="infusion_ivVolume" type="number" class="input-tech h-8 text-sm"></div>
-                                <button onclick="calculateInfusion('ivVolume')" class="btn-tech-outline h-8 px-2 text-xs">Calc</button>
-                            </div>
-                             <div class="flex gap-2 items-end">
-                                <div class="flex-1"><label class="text-[10px] text-[var(--text-muted)]">Total Fluid Volume (mL)</label><input id="infusion_totalVolume" type="number" class="input-tech h-8 text-sm bg-transparent border-dashed"></div>
-                            </div>
-                             <div class="flex gap-2 items-end">
-                                <div class="flex-1"><label class="text-[10px] text-[var(--text-muted)]">IV Drip Rate (mL/hr)</label><input id="infusion_dripRate" type="number" class="input-tech h-8 text-sm"></div>
-                                <button onclick="calculateInfusion('dripRate')" class="btn-tech-outline h-8 px-2 text-xs">Calc</button>
-                            </div>
-                        </div>
-                        <button id="toggleDurationBtn" onclick="toggleDurationSection()" class="text-xs text-[var(--accent-primary)] underline w-full text-center">Show Infusion Duration Calculator</button>
-                        <div id="durationSection" class="hidden pt-2 border-t border-[var(--border-color)] grid grid-cols-3 gap-2">
-                             <div><label class="text-[10px]">Total Vol</label><input id="duration_totalVolume" class="input-tech h-8 text-xs"></div>
-                             <div><label class="text-[10px]">Drip Rate</label><input id="duration_dripRate" class="input-tech h-8 text-xs"></div>
-                             <div><label class="text-[10px]">Time (hrs)</label><input id="duration_time" class="input-tech h-8 text-xs"></div>
-                             <button onclick="calculateDuration('time')" class="col-span-3 btn-tech-outline h-6 text-xs mt-1">Calc</button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <!-- PAGE 5: INSULIN -->
-            <div id="calsulin" class="content-page hidden fade-in max-w-5xl mx-auto">
-                <div class="glass-panel p-6">
-                    <header class="flex justify-between items-center mb-6 border-b border-[var(--border-color)] pb-4">
+            <!-- INR-Based TWD Adjustment Calculator -->
+            <div id="calculator-inr" class="hidden">
+                <div class="card">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2" style="color: var(--accent-color)">Coagulation Control</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                         <div>
-                            <h2 class="text-2xl font-bold">In-Patient Insulin Dosing Tool</h2>
-                            <p class="text-[var(--text-muted)] text-sm">Initial Dosing, Titration, and Correction.</p>
+                            <label for="currentInr" class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Current INR</label>
+                            <input type="number" id="currentInr" placeholder="e.g., 2.5" class="input-field text-2xl" step="0.1">
                         </div>
-                        <div class="flex space-x-2">
-                            <button id="calsulin-step1-btn" onclick="showCalsulinTab('step1')" class="btn-tech text-sm">Step 1: Initial Dose</button>
-                            <button id="calsulin-step2-btn" onclick="showCalsulinTab('step2')" class="btn-tech-outline text-sm">Step 2: Titration Order</button>
-                            <button id="calsulin-step3-btn" onclick="showCalsulinTab('step3')" class="btn-tech-outline text-sm">Step 3: Correction Dose</button>
+                        <div>
+                            <label for="currentTwd" class="block text-sm font-semibold mb-2" style="color: var(--text-secondary)">Current Weekly Dose (TWD)</label>
+                            <input type="number" id="currentTwd" placeholder="e.g., 35" class="input-field text-2xl" step="0.5">
                         </div>
-                    </header>
-
-                    <!-- Step 1 -->
-                    <div id="calsulin-step1" class="tab-content block">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div class="space-y-4">
-                                <h4 class="text-[var(--accent-primary)] font-bold">1. Patient & Dose Information</h4>
-                                <div class="p-3 border border-[var(--border-color)] rounded bg-[var(--bg-input)]">
-                                    <label class="block text-xs font-bold mb-2">TDD Calculation Method</label>
-                                    <div class="flex gap-4 mb-2">
-                                        <label class="flex items-center text-sm cursor-pointer"><input type="radio" name="tddMethod" value="calculate" checked class="mr-2 accent-[var(--accent-primary)]"> Calculate from BW</label>
-                                        <label class="flex items-center text-sm cursor-pointer"><input type="radio" name="tddMethod" value="manual" class="mr-2 accent-[var(--accent-primary)]"> Enter TDD Manually</label>
-                                    </div>
-                                    <div id="calculationInputs" class="space-y-2">
-                                        <input type="number" id="bodyWeight" class="input-tech" placeholder="Body Weight (kg)">
-                                        <div class="flex gap-2">
-                                            <label class="flex-1 border border-[var(--border-color)] rounded p-2 text-center text-xs cursor-pointer hover:bg-[var(--accent-primary)] hover:text-white transition"><input type="radio" name="tddUnit" value="0.4" class="hidden">0.4 U/kg</label>
-                                            <label class="flex-1 border border-[var(--border-color)] rounded p-2 text-center text-xs cursor-pointer bg-[var(--accent-primary)] text-black font-bold transition"><input type="radio" name="tddUnit" value="0.5" checked class="hidden">0.5 U/kg</label>
-                                            <label class="flex-1 border border-[var(--border-color)] rounded p-2 text-center text-xs cursor-pointer hover:bg-[var(--accent-primary)] hover:text-white transition"><input type="radio" name="tddUnit" value="0.6" class="hidden">0.6 U/kg</label>
-                                        </div>
-                                    </div>
-                                    <div id="manualTddInput" class="hidden"><input type="number" id="manualTdd" class="input-tech" placeholder="Total Daily Dose (TDD)"></div>
-                                </div>
-
-                                <div class="p-3 border border-[var(--border-color)] rounded bg-[var(--bg-input)]">
-                                    <label class="block text-xs font-bold mb-2">Insulin Regimen</label>
-                                    <div class="space-y-2">
-                                        <label class="flex items-center p-2 rounded hover:bg-white/5 cursor-pointer"><input type="radio" name="feedingFrequency" value="3meals" class="mr-2 accent-[var(--accent-primary)]"> 3 Meals/Day (Self-eating) - RI + NPH</label>
-                                        <label class="flex items-center p-2 rounded hover:bg-white/5 cursor-pointer"><input type="radio" name="feedingFrequency" value="4meals" class="mr-2 accent-[var(--accent-primary)]"> 4 Feeds/Day (Tube-feeding) - RI + NPH</label>
-                                        <label class="flex items-center p-2 rounded hover:bg-white/5 cursor-pointer"><input type="radio" name="feedingFrequency" value="premixed" class="mr-2 accent-[var(--accent-primary)]"> Premixed (e.g., 70/30) - 2 injections/day</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col h-full bg-[var(--bg-input)] rounded border border-[var(--border-color)] p-4 relative overflow-hidden">
-                                <div id="noSelectionMessage" class="absolute inset-0 flex items-center justify-center text-[var(--text-muted)] text-sm">Please enter patient data and select a regimen.</div>
-                                <div id="calsulin-resultsContent" class="hidden space-y-4 z-10 h-full flex flex-col">
-                                    <h4 class="text-[var(--accent-primary)] font-bold">2. Calculated Insulin Regimen</h4>
-                                    <div class="grid grid-cols-3 gap-2 text-center">
-                                        <div class="p-2 bg-[var(--accent-secondary)]/20 rounded border border-[var(--accent-secondary)]">
-                                            <div class="text-[10px] uppercase">Total Daily Dose</div>
-                                            <div id="tddResult" class="text-xl font-bold text-[var(--accent-secondary)]">- U</div>
-                                        </div>
-                                        <div class="p-2 bg-[var(--accent-primary)]/20 rounded border border-[var(--accent-primary)]">
-                                            <div class="text-[10px] uppercase">Total Bolus</div>
-                                            <div id="bolusResult" class="text-xl font-bold text-[var(--accent-primary)]">- U</div>
-                                        </div>
-                                        <div class="p-2 bg-yellow-500/20 rounded border border-yellow-500">
-                                            <div class="text-[10px] uppercase">Total Basal</div>
-                                            <div id="basalResult" class="text-xl font-bold text-yellow-500">- U</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex-1">
-                                        <h5 class="text-xs font-bold mb-1">Daily Schedule:</h5>
-                                        <table class="w-full text-xs tech-table">
-                                            <thead class="text-left font-bold"><tr><th>Time</th><th>Insulin Type</th><th>Dose (Units)</th></tr></thead>
-                                            <tbody id="scheduleBody"></tbody>
-                                        </table>
-                                    </div>
-                                    <div id="calculationText" class="text-[10px] font-mono text-[var(--text-muted)] whitespace-pre-wrap border-t border-[var(--border-color)] pt-2"></div>
-                                    <button id="proceedButton" onclick="proceedToStep2()" class="btn-tech w-full">Use these doses in Step 2 &rarr;</button>
-                                </div>
-                            </div>
+                        <div class="md:col-span-2">
+                             <label class="block text-sm font-semibold mb-3 uppercase tracking-wider" style="color: var(--accent-color)">Clinical Guideline</label>
+                             <div class="flex flex-col sm:flex-row gap-4">
+                                 <label class="flex items-center space-x-3 p-4 border rounded-xl cursor-pointer hover:bg-white/5 transition-all" style="border-color: var(--glass-border)">
+                                     <input type="radio" name="guideline" value="thai" class="form-radio text-sky-500 focus:ring-0" checked onchange="updateInrReferenceTable()">
+                                     <span class="font-medium">Thai Society of Hematology</span>
+                                 </label>
+                                 <label class="flex items-center space-x-3 p-4 border rounded-xl cursor-pointer hover:bg-white/5 transition-all" style="border-color: var(--glass-border)">
+                                     <input type="radio" name="guideline" value="accp" class="form-radio text-sky-500 focus:ring-0" onchange="updateInrReferenceTable()">
+                                     <span class="font-medium">Standard (ACCP)</span>
+                                 </label>
+                             </div>
                         </div>
                     </div>
-
-                    <!-- Step 2 -->
-                    <div id="calsulin-step2" class="tab-content hidden">
-                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div class="space-y-4">
-                                <h4 class="text-[var(--accent-primary)] font-bold">1. Baseline Doses for Titration</h4>
-                                <div><label class="text-xs text-[var(--text-muted)]">Regimen Type</label><select id="regimenType" class="input-tech"><option value="basalBolus">Basal-Bolus</option><option value="premixed">Premixed (70/30)</option></select></div>
-                                <!-- Dynamic Inputs -->
-                                <div id="basalBolusInputs">
-                                    <div class="flex gap-4 mb-2"><label class="text-xs flex items-center cursor-pointer"><input type="radio" name="feedingSchedule" value="3" checked class="mr-2 accent-[var(--accent-primary)]"> 3 Meals</label><label class="text-xs flex items-center cursor-pointer"><input type="radio" name="feedingSchedule" value="4" class="mr-2 accent-[var(--accent-primary)]"> 4 Feeds</label></div>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <select id="basalType" class="input-tech"><option>NPH</option><option>Semglee</option><option>Glargine</option></select>
-                                        <input id="basalDose" type="number" class="input-tech" placeholder="Basal Dose (U)">
-                                        <select id="bolusType" class="input-tech"><option>RI</option><option>Novorapid</option></select>
-                                        <input id="bolusDose" type="number" class="input-tech" placeholder="Bolus Dose (U)">
-                                    </div>
-                                </div>
-                                <div id="premixedInputs" class="hidden grid grid-cols-2 gap-2">
-                                    <input type="hidden" id="premixedType" value="NPH (70/30)">
-                                    <input id="premixedMorningDose" type="number" class="input-tech" placeholder="Morning Dose (U)">
-                                    <input id="premixedEveningDose" type="number" class="input-tech" placeholder="Evening Dose (U)">
-                                </div>
-                                <div id="validation-message" class="text-red-400 text-xs h-4"></div>
-                                <button onclick="generateOrder()" class="btn-tech w-full">Generate / Update Order</button>
-                            </div>
-                            <div class="bg-[var(--bg-input)] p-4 rounded border border-[var(--border-color)] flex flex-col">
-                                <h4 class="text-[var(--accent-primary)] font-bold mb-2">2. Generated Titration Order</h4>
-                                <div id="orderOutput" class="text-sm font-mono whitespace-pre-wrap flex-1">Your generated order will appear here.</div>
-                                <button id="copyButton" onclick="copyOrderText()" class="btn-tech-outline mt-2 hidden w-full">Copy Order Text</button>
-                                <div id="copyFeedback" class="text-center text-xs text-[var(--accent-primary)] h-4 mt-1"></div>
-                            </div>
-                         </div>
+                     <div class="mt-8 pt-6 border-t" style="border-color: var(--glass-border)">
+                        <button onclick="calculateInrAdjustment()" class="btn-primary w-full md:w-auto shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.667 0l3.181-3.183m-4.991 0l-3.182-3.182a8.25 8.25 0 00-11.667 0l3.182 3.182z" /></svg>
+                            Calculate Adjustment
+                        </button>
                     </div>
-                    
-                    <!-- Step 3 Correction -->
-                    <div id="calsulin-step3" class="tab-content hidden">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-4">
-                                <h4 class="text-[var(--accent-primary)] font-bold">1. Patient & Glucose Data</h4>
-                                <div class="flex gap-2">
-                                    <input id="tddCorrection" type="number" class="input-tech" placeholder="Total Daily Dose (TDD) (units)">
-                                    <button onclick="useCalculatedTDD()" class="btn-tech-outline text-xs whitespace-nowrap">Use TDD from Step 1</button>
-                                </div>
-                                <input id="current-bg" type="number" class="input-tech" placeholder="Current Blood Glucose (mg/dL)">
-                                <input id="target-bg" type="number" class="input-tech" value="150" placeholder="Target Blood Glucose (mg/dL)">
-                                
+                </div>
+                <div id="inrResult" class="animated-result">
+                    <div class="card result-card">
+                          <h3 class="font-bold text-2xl mb-4" style="color: var(--accent-color)">Clinical Recommendation</h3>
+                          <div class="mt-4 space-y-4">
+                            <div class="p-4 rounded-lg bg-white/5 border-l-4" style="border-color: var(--accent-color)">
+                                <p class="opacity-70 text-sm uppercase">Action Required</p>
+                                <p id="inrAction" class="font-bold text-lg mt-1"></p>
+                            </div>
+                            
+                            <p id="inrHoldDoseLine" class="hidden p-2 bg-red-500/10 border border-red-500/30 rounded text-red-300">Hold: <span id="inrHoldDose" class="font-bold"></span></p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="text-xs text-[var(--text-muted)] mb-1 block">Select Insulin Sensitivity Factor (ISF) Rule</label>
-                                    <div class="flex gap-2">
-                                        <label class="flex-1 border border-[var(--border-color)] rounded p-2 text-center cursor-pointer hover:bg-white/5"><input type="radio" name="isf-rule" value="1800" checked class="hidden"><span class="block text-sm font-bold">1800 Rule</span><span class="text-[10px]">Rapid-Acting Analogs</span></label>
-                                        <label class="flex-1 border border-[var(--border-color)] rounded p-2 text-center cursor-pointer hover:bg-white/5"><input type="radio" name="isf-rule" value="1700" class="hidden"><span class="block text-sm font-bold">1700 Rule</span><span class="text-[10px]">Rapid-Acting (Cons)</span></label>
-                                        <label class="flex-1 border border-[var(--border-color)] rounded p-2 text-center cursor-pointer hover:bg-white/5"><input type="radio" name="isf-rule" value="1500" class="hidden"><span class="block text-sm font-bold">1500 Rule</span><span class="text-[10px]">Regular Insulin</span></label>
-                                    </div>
+                                    <p class="opacity-70 text-sm">Target Range</p>
+                                    <p class="text-xl font-mono"><span id="newTwdRange" class="font-bold" style="color: var(--accent-color)"></span> mg</p>
                                 </div>
-                                <button id="calculate-correction-btn" class="btn-tech w-full">Calculate Correction Dose</button>
-                                <div id="calsulin-error-message" class="text-red-400 text-xs h-4"></div>
+                                <div>
+                                    <p class="opacity-70 text-sm">Suggested Target</p>
+                                    <p class="text-xl font-mono"><span id="suggestedNewTwd" class="font-bold" style="color: var(--accent-color)"></span> mg</p>
+                                </div>
                             </div>
-                            <div id="calsulin-results-container" class="bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)] rounded p-6 flex flex-col justify-center items-center text-center">
-                                <h4 class="text-[var(--accent-primary)] font-bold mb-4">2. Calculation Breakdown</h4>
-                                <div id="results-content-correction" class="text-[var(--text-muted)]">Results will be displayed here.</div>
-                            </div>
-                        </div>
+                          </div>
+                          <div class="mt-8">
+                              <button id="applyNewTwdBtn" class="btn-secondary w-full md:w-auto">Transfer to Calculator</button>
+                          </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- PAGE 6: NUTRITION -->
-            <div id="nutrition" class="content-page hidden fade-in max-w-4xl mx-auto">
-                <div class="glass-panel p-8">
-                    <h2 class="text-2xl font-bold text-[var(--accent-secondary)] mb-6">Nutrition Consult Note Generator</h2>
-                    <div id="nutrition-form-container" class="grid grid-cols-1 gap-4">
-                        <!-- Dynamic fields -->
-                    </div>
-                    <div class="flex gap-4 mt-8 pt-4 border-t border-[var(--border-color)]">
-                        <button id="nutritionGenerateBtn" class="btn-tech flex-1">Generate Note</button>
-                        <button id="nutritionCopyBtn" class="btn-tech-outline flex-1">Copy to Clipboard</button>
-                        <button id="nutritionSaveBtn" class="btn-tech-outline flex-1">Save as .txt</button>
-                    </div>
-                    <h2 class="text-xl font-semibold mt-6">Generated Note:</h2>
-                    <textarea id="nutritionOutput" class="input-tech h-64 mt-4 font-mono text-xs" readonly></textarea>
-                </div>
-            </div>
-
-            <!-- PAGE 7: STEROID -->
-            <div id="steroid" class="content-page hidden fade-in max-w-3xl mx-auto">
-                <div class="glass-panel p-8 space-y-6">
-                    <h2 class="text-2xl font-bold flex items-center gap-3"><i class="ph ph-shield-check text-[var(--accent-primary)]"></i> Corticosteroid Equivalence Calculator</h2>
-                    <p class="text-sm text-[var(--text-muted)]">Calculate equivalent anti-inflammatory doses for common corticosteroids.</p>
-                    <div class="flex gap-4 items-end">
-                        <div class="flex-1">
-                            <label class="text-xs text-[var(--text-muted)]">Convert From</label>
-                            <select id="steroid_drug" class="input-tech">
-                                <option value="hydrocortisone">Hydrocortisone</option>
-                                <option value="cortisone">Cortisone</option>
-                                <option value="prednisone">Prednisone</option>
-                                <option value="prednisolone">Prednisolone</option>
-                                <option value="methylprednisolone">Methylprednisolone</option>
-                                <option value="triamcinolone">Triamcinolone</option>
-                                <option value="dexamethasone">Dexamethasone</option>
-                                <option value="betamethasone">Betamethasone</option>
-                            </select>
-                        </div>
-                        <div class="flex-1">
-                            <label class="text-xs text-[var(--text-muted)]">Dose (mg)</label>
-                            <input id="steroid_dose" type="number" class="input-tech" placeholder="20">
-                        </div>
-                        <button onclick="calculateSteroidEquivalence()" class="btn-tech">Calculate</button>
-                    </div>
-                    
-                    <div id="steroidErrorMessage" class="hidden text-red-400 text-center"></div>
-                    <div id="steroidResultsSection" class="hidden space-y-2">
-                         <h2 class="text-xl font-bold text-white border-b border-[var(--border-color)] pb-2">Equivalent Anti-inflammatory Doses</h2>
-                         <div id="steroidResultsList" class="space-y-2"></div>
-                    </div>
-
-                    <div class="mt-8">
-                        <h4 class="text-lg font-bold text-[var(--text-muted)] mb-2">Corticosteroid Potency Reference</h4>
-                        <table class="w-full text-xs text-left tech-table">
-                             <thead class="text-[var(--accent-primary)]">
-                                <tr><th>Corticosteroid</th><th>Equivalent Dose (mg)</th><th>Anti-inflammatory Potency</th><th>Mineralocorticoid Potency</th></tr>
+                <div class="mt-8">
+                    <h3 class="text-lg font-bold mb-4 opacity-80 uppercase tracking-widest">Protocol Matrix</h3>
+                    <div class="overflow-x-auto rounded-xl border" style="border-color: var(--glass-border)">
+                        <table class="min-w-full text-sm text-left">
+                            <thead style="background: rgba(255,255,255,0.1)">
+                                <tr>
+                                    <th class="p-3 font-semibold">INR Range</th>
+                                    <th class="p-3 font-semibold">Standard Protocol</th>
+                                    <th class="p-3 font-semibold">TWD % Adjustment</th>
+                                </tr>
                             </thead>
-                            <tbody class="text-[var(--text-main)] opacity-80">
-                                <tr><td>Hydrocortisone</td><td>20</td><td>1</td><td>1</td></tr>
-                                <tr><td>Cortisone</td><td>25</td><td>0.8</td><td>0.8</td></tr>
-                                <tr><td>Prednisone</td><td>5</td><td>4</td><td>0.6</td></tr>
-                                <tr><td>Prednisolone</td><td>5</td><td>4</td><td>0.6</td></tr>
-                                <tr><td>Methylprednisolone</td><td>4</td><td>5</td><td>0.5</td></tr>
-                                <tr><td>Triamcinolone</td><td>4</td><td>5</td><td>0</td></tr>
-                                <tr><td>Dexamethasone</td><td>0.75</td><td>25</td><td>0</td></tr>
-                                <tr><td>Betamethasone</td><td>0.6</td><td>25</td><td>0</td></tr>
+                            <tbody id="inrReferenceTable" class="divide-y" style="divide-color: rgba(255,255,255,0.05)">
+                                <!-- Rows populated by JS -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-        </div> <!-- End Content Area -->
-    </main>
+    <!-- Custom Modal -->
+    <div id="customModal" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="modal-content rounded-2xl p-8 w-full max-w-md transform scale-95 transition-transform duration-300 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1" style="background: var(--accent-color)"></div>
+            <h3 id="modalTitle" class="text-xl font-bold font-orbitron mb-2" style="color: var(--accent-color)">System Alert</h3>
+            <p id="modalMessage" class="mt-2 text-lg leading-relaxed opacity-90">Notification message.</p>
+            <div class="mt-8 text-right">
+                <button id="modalCloseBtn" class="btn-primary">Acknowledge</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Alert Container -->
-    <div id="copy-alert"></div>
-
-    <!-- MAIN SCRIPT -->
     <script>
-        // --- THEME SWITCHER LOGIC ---
+        // --- THEME ENGINE ---
         function setTheme(themeName) {
             document.documentElement.setAttribute('data-theme', themeName);
-            document.documentElement.style.removeProperty('--accent-primary');
-            document.documentElement.style.removeProperty('--accent-secondary');
-            document.documentElement.style.removeProperty('--accent-primary-rgb');
-            localStorage.setItem('medos-theme', themeName);
+            // Reset custom colors if coming from random
+            if(themeName !== 'random') {
+                document.documentElement.style.removeProperty('--accent-color');
+            }
         }
 
         function setRandomTheme() {
-            document.documentElement.setAttribute('data-theme', 'neon'); 
-            const randomHue1 = Math.floor(Math.random() * 360);
-            const randomHue2 = (randomHue1 + 180) % 360;
-            const primaryColor = `hsl(${randomHue1}, 80%, 60%)`;
-            const secondaryColor = `hsl(${randomHue2}, 80%, 60%)`;
+            const hue = Math.floor(Math.random() * 360);
+            const saturation = 70 + Math.floor(Math.random() * 30);
+            const lightness = 50 + Math.floor(Math.random() * 10);
             
-            const hslToRgb = (h, s, l) => {
-                s /= 100; l /= 100;
-                const k = n => (n + h / 30) % 12;
-                const a = s * Math.min(l, 1 - l);
-                const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-                return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255)];
-            };
-            const rgb = hslToRgb(randomHue1, 80, 60);
-
-            document.documentElement.style.setProperty('--accent-primary', primaryColor);
-            document.documentElement.style.setProperty('--accent-secondary', secondaryColor);
-            document.documentElement.style.setProperty('--accent-primary-rgb', rgb.join(','));
+            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            const glow = `hsla(${hue}, ${saturation}%, ${lightness}%, 0.5)`;
+            
+            document.documentElement.setAttribute('data-theme', 'neon'); // Use neon base
+            document.documentElement.style.setProperty('--accent-color', color);
+            document.documentElement.style.setProperty('--accent-glow', glow);
+            document.documentElement.style.setProperty('--glass-border', `hsla(${hue}, ${saturation}%, ${lightness}%, 0.3)`);
+            document.documentElement.style.setProperty('--btn-grad-start', color);
+            document.documentElement.style.setProperty('--btn-grad-end', `hsl(${hue + 30}, ${saturation}%, ${lightness}%)`);
         }
 
-        // Initialize Theme
-        const savedTheme = localStorage.getItem('medos-theme') || 'neon';
-        setTheme(savedTheme);
+        // --- CUSTOM MODAL ---
+        const modal = document.getElementById('customModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-
-        // --- NAVIGATION LOGIC ---
-        const navItems = document.querySelectorAll('.nav-item');
-        const pages = document.querySelectorAll('.content-page');
-        const pageTitle = document.getElementById('page-title');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const closeSidebar = document.getElementById('close-sidebar');
-
-        function switchPage(targetId) {
-            pages.forEach(p => p.classList.add('hidden'));
-            const target = document.getElementById(targetId);
-            if(target) target.classList.remove('hidden');
-
-            navItems.forEach(n => n.classList.remove('active'));
-            const activeNav = document.querySelector(`.nav-item[data-target="${targetId}"]`);
-            if(activeNav) {
-                activeNav.classList.add('active');
-                const text = activeNav.innerText.trim();
-                pageTitle.textContent = text;
-            }
-            if(window.innerWidth < 768) sidebar.classList.add('-translate-x-full');
+        function showModal(message) {
+            modalMessage.textContent = message;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('.modal-content').classList.remove('scale-95');
         }
 
-        navItems.forEach(item => item.addEventListener('click', () => switchPage(item.dataset.target)));
-        sidebarToggle.addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
-        closeSidebar.addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
+        modalCloseBtn.addEventListener('click', () => {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('.modal-content').classList.add('scale-95');
+        });
+
+        // --- GLOBAL STATE ---
+        let appliedRegimenCombinations = null;
+        const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 
-        // --- GENERAL UTILITY ---
-        const getEl = (id) => document.getElementById(id);
-        const querySel = (sel) => document.querySelector(sel);
-        const copyToClipboard = (txt) => {
-            if (!txt) return;
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(txt).then(() => showToast(txt)).catch(() => fallbackCopy(txt));
+        // --- UTILITY AND INITIALIZATION ---
+        const currentDateInput = document.getElementById('currentDate');
+        const appointmentDateInput = document.getElementById('appointmentDate');
+        const totalDaysInput = document.getElementById('totalDays');
+        const totalWeeksInput = document.getElementById('totalWeeks');
+
+        const today = new Date();
+        const formatDate = (date) => date.toISOString().split('T')[0];
+        currentDateInput.value = formatDate(today);
+
+        // --- DATE CALCULATION LOGIC ---
+        // From Date to Days/Weeks
+        function updateDaysAndWeeks() {
+            const start = new Date(currentDateInput.value);
+            const end = new Date(appointmentDateInput.value);
+            if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && end >= start) {
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                totalDaysInput.value = diffDays;
+                totalWeeksInput.value = parseFloat((diffDays / 7).toFixed(2));
             } else {
-                fallbackCopy(txt);
+                totalDaysInput.value = '';
+                totalWeeksInput.value = '';
             }
-        };
-        const fallbackCopy = (txt) => {
-            const ta = document.createElement('textarea');
-            ta.value = txt;
-            ta.style.position = 'fixed'; ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try { document.execCommand('copy'); showToast(txt); } catch (err) { console.error('Copy failed', err); }
-            document.body.removeChild(ta);
-        };
-        const showToast = (txt) => {
-            const alert = getEl('copy-alert');
-            // Removed explicit text color classes to rely on CSS variable inheritance for theme compatibility
-            alert.innerHTML = `<div class="flex items-center"><i class="ph ph-check-circle text-green-500 mr-3 text-2xl"></i><div>Copied to clipboard:<br><span class="font-semibold" style="color: var(--text-main)">${txt.replace(/\n/g, '<br>')}</span></div></div>`;
-            alert.classList.add('show');
-            setTimeout(() => alert.classList.remove('show'), 4500);
-        };
+        }
 
-        // --- ICU ORDER LOGIC (RESTORED VENT TOGGLE) ---
-        const ventMode = getEl('vent-mode');
-        ventMode.addEventListener('change', toggleVentFields);
+        // From Days to Date/Weeks
+        function updateDateAndWeeks() {
+            const days = parseInt(totalDaysInput.value, 10);
+            const start = new Date(currentDateInput.value);
+            if (!isNaN(days) && days > 0 && !isNaN(start.getTime())) {
+                // Update weeks
+                totalWeeksInput.value = parseFloat((days / 7).toFixed(2));
+                // Update date
+                const newDate = new Date(start.getTime());
+                newDate.setDate(start.getDate() + days - 1);
+                appointmentDateInput.value = formatDate(newDate);
+            } else {
+                appointmentDateInput.value = '';
+                totalWeeksInput.value = '';
+            }
+        }
+
+        // From Weeks to Date/Days
+        function updateDateAndDays() {
+            const weeks = parseFloat(totalWeeksInput.value);
+            if (!isNaN(weeks) && weeks > 0) {
+                const days = Math.round(weeks * 7);
+                totalDaysInput.value = days;
+                // Now that days is updated, trigger the update from days
+                updateDateAndWeeks();
+            } else {
+                totalDaysInput.value = '';
+                appointmentDateInput.value = '';
+            }
+        }
+
+        appointmentDateInput.addEventListener('change', updateDaysAndWeeks);
+        totalDaysInput.addEventListener('input', updateDateAndWeeks);
+        totalWeeksInput.addEventListener('input', updateDateAndDays);
+
+        // --- UI TAB SWITCHING ---
+        function switchTab(tabName) {
+            document.getElementById('calculator-simple').classList.toggle('hidden', tabName !== 'simple');
+            document.getElementById('calculator-warfarin').classList.toggle('hidden', tabName !== 'warfarin');
+            document.getElementById('calculator-inr').classList.toggle('hidden', tabName !== 'inr');
+            
+            document.querySelectorAll('.main-tab-nav button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
         
-        function toggleVentFields() {
-            const mode = ventMode.value;
-            const display = (selector, condition) => {
-                document.querySelector(selector).style.display = condition ? 'block' : 'none';
-            };
-            display('.vt-field', mode === 'VCV');
-            display('.ip-field', mode === 'PCV' || mode === 'SIMV');
-            display('.ps-field', mode === 'PSV' || mode === 'SIMV');
-            display('.rr-field', mode !== 'PSV');
-        }
-        // Init call
-        toggleVentFields();
+        function switchWarfarinTab(tabName) {
+            document.getElementById('twd-input-section').classList.toggle('hidden', tabName !== 'twd');
+            document.getElementById('daily-dose-section').classList.toggle('hidden', tabName === 'twd');
+            document.getElementById('twdOptionsContainer').classList.add('hidden');
+            
+            document.querySelectorAll('.sub-tab-nav button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`warfarin-tab-${tabName}`).classList.add('active');
 
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = e.currentTarget.dataset.id;
-                let text = "";
+            if (tabName === 'daily') {
+                appliedRegimenCombinations = null;
+            }
+        }
+
+        // --- SIMPLE PRESCRIPTION CALCULATOR (NEW & UPDATED) ---
+        function togglePrescriptionType(type) {
+            document.getElementById('daily-dose-container').classList.toggle('hidden', type !== 'daily');
+            const weeklyContainer = document.getElementById('weekly-dose-container');
+            weeklyContainer.classList.toggle('hidden', type !== 'weekly');
+            document.getElementById('simpleResult').style.display = 'none'; // Hide result on switch
+
+            if (type === 'weekly' && weeklyContainer.querySelector('.specific-day-row') === null) {
+                addSpecificDayRow(); // Add an initial row for convenience
+            }
+        }
+
+        function addSpecificDayRow() {
+            const container = document.getElementById('specific-day-rows');
+            const row = document.createElement('div');
+            row.className = 'specific-day-row flex items-center gap-3 p-2 rounded-md bg-white/5';
+
+            const dayOptions = daysOfWeek.map(day => `<option value="${day}">${day}</option>`).join('');
+
+            row.innerHTML = `
+                <select class="input-field flex-grow !py-2">
+                    <option value="">Select Day</option>
+                    ${dayOptions}
+                </select>
+                <input type="number" class="input-field w-32 !py-2" placeholder="Tablets" min="0" step="0.5">
+                <button onclick="removeSpecificDayRow(this)" class="text-red-400 hover:text-red-300 p-2 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            `;
+            container.appendChild(row);
+        }
+
+        function removeSpecificDayRow(buttonEl) {
+            buttonEl.parentElement.remove();
+        }
+
+        function calculateSimpleDosage() {
+            const days = parseInt(totalDaysInput.value, 10);
+            const resultEl = document.getElementById('simpleResult');
+            const weeklyBreakdownEl = document.getElementById('simpleWeeklyBreakdown');
+            
+            resultEl.style.display = 'none';
+            weeklyBreakdownEl.classList.add('hidden');
+
+            if (!days || days <= 0) {
+                showModal("Please set a valid number of days for the supply.");
+                return;
+            }
+
+            const prescriptionType = document.querySelector('input[name="prescriptionType"]:checked').value;
+            
+            let totalTablets = 0;
+            let dailyOrAvgTablets = 0;
+            let dailyDoseLabel = "Tablets Per Day";
+
+            if (prescriptionType === 'daily') {
+                const prescription = document.getElementById('simplePrescription').value.trim();
+                const errorEl = document.getElementById('simplePrescriptionError');
+                let dailyTablets = null;
+                const comboRegex = /^(\d*\.?\d+)\s*[xX*]\s*(\d+)$/;
+                const comboMatch = prescription.match(comboRegex);
+                const singleNumberRegex = /^\d*\.?\d+$/;
                 
-                // BD FEED
-                if(id === 'bd_feed') {
-                    const c = getEl('bd_feed-concentration').value;
-                    const v = getEl('bd_feed-volume').value;
-                    const f = getEl('bd_feed-frequency').value;
-                    const fl = getEl('bd_feed-flush').value;
-                    text = `BD (${c || 'N/A'}) ${v || 'N/A'} ml x ${f || 'N/A'} feeds\nน้ำตาม ${fl || 'N/A'} ml/F`;
-                }
-                // VENT (RESTORED EXACT LOGIC)
-                else if(id === 'vent'){
-                    const m = getEl('vent-mode').value;
-                    const p = [];
-                    // Exact replication of original buildText logic
-                    if (m === 'VCV') p.push(`VT ${getEl('vent-VT').value}`);
-                    if (m === 'PCV' || m === 'SIMV') p.push(`IP ${getEl('vent-IP').value}`);
-                    if (m === 'PSV' || m === 'SIMV') p.push(`PS ${getEl('vent-PS').value}`);
-                    if (m !== 'PSV') p.push(`RR ${getEl('vent-RR').value}`);
-                    p.push(`Ti ${getEl('vent-Ti').value}`);
-                    p.push(`FT ${getEl('vent-FT').value}`);
-                    p.push(`PEEP ${getEl('vent-PEEP').value}`);
-                    p.push(`FiO₂ ${getEl('vent-FiO2').value}`);
-                    text = `On ventilator ${m} mode, ` + p.join(', ');
-                }
-                // MEDS
-                else {
-                    const titleMap = { midazolam: 'Midazolam', propofol: '1% Propofol', dexmed: 'Dexmedetomidine', fentanyl: 'Fentanyl', norepi: 'Levophed', epi: 'Epinephrine', dopamine: 'Dopamine', dobutamine: 'Dobutamine' };
-                    const name = titleMap[id];
-                    const concInput = getEl(id+'-concentration') || document.querySelector(`#${id}-concentration`);
-                    const conc = concInput ? concInput.value : '';
-                    const rate = getEl(id+'-rate').value;
-                    
-                    if(!rate) return;
-
-                    text = `${name} (${conc})\nIV rate ${rate} mL/hr`;
-                    if (id === 'fentanyl') text = `${name} (${conc}) IV rate ${rate} mL/hr`;
-
-                    // CALCULATION: mcg/kg/min
-                    const wtInput = getEl('vasopressors-weight');
-                    const wt = parseFloat(wtInput ? wtInput.value : 0);
-                    
-                    if (['norepi', 'epi', 'dopamine', 'dobutamine'].includes(id) && wt > 0 && conc.includes(':')) {
-                        const [mg, vol] = conc.split(':').map(Number);
-                        if (vol > 0) {
-                            const mgPerMl = mg / vol;
-                            const dose = ((rate * mgPerMl * 1000) / 60 / wt).toFixed(2);
-                            text = `${name} (${conc})\nIV ${rate} mL/hr [${dose} µg/kg/min]`;
-                        }
-                    }
-
-                    if(id === 'norepi' || id === 'epi'){
-                         const titrate = getEl(id+'-titrate').value;
-                         text += `\nTitrate ครั้งละ ${titrate} ml/hr to maintain MAP >= 65 mmHg`;
-                    }
+                if (comboMatch) {
+                    dailyTablets = parseFloat(comboMatch[1]) * parseInt(comboMatch[2], 10);
+                } else if (singleNumberRegex.test(prescription)) {
+                    dailyTablets = parseFloat(prescription);
                 }
 
-                if(text) copyToClipboard(text);
-            });
-        });
-
-        document.querySelectorAll('.preset-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const parent = e.target.closest('.glass-panel');
-                parent.querySelectorAll('.preset-btn').forEach(b => { b.classList.remove('bg-[var(--accent-primary)]', 'text-black'); b.classList.add('btn-tech-outline'); });
-                e.target.classList.remove('btn-tech-outline'); e.target.classList.add('bg-[var(--accent-primary)]', 'text-black');
-                const inputId = parent.querySelector('input[type="hidden"]').id;
-                getEl(inputId).value = e.target.dataset.ratio;
-            });
-        });
-        
-        // --- ATB DATA (100% RESTORED FROM ORIGINAL SOURCE - FULL DATA) ---
-        const antibioticData = {
-            "Meropenem": { tiers: { "Usual Dose (1 g q8h)": { loading: "Not Required", doses: [{ min: 50.01, max: 130, dose: "1 g every 8 hours" }, { min: 25.01, max: 50, dose: "1 g every 12 hours" }, { min: 10, max: 25, dose: "500 mg every 12 hours" }], rrt: { "IHD": "500 mg every 24 hours, give after dialysis (AD) on HD days", "PD": "500 mg every 24 hours", "CRRT_II": "500 mg to 1 g every 8 hours", "CRRT_CI": "1 g infused over 12 hours, every 12 hours", "PIRRT_SLED": "1 g every 12 hours (Up to 2 g q8h if residual diuresis)" } }, "High Dose (2 g q8h)": { loading: "2 g (for Extended Infusion)", doses: [{ min: 50.01, max: 130, dose: "2 g every 8 hours" }, { min: 25.01, max: 50, dose: "2 g every 12 hours" }, { min: 10, max: 25, dose: "1 g every 12 hours" }, { min: 0, max: 9.99, dose: "1 g q24h or 500 mg q12h" }], rrt: { "IHD": "1 g every 24 hours or 500 mg every 12 hours, give after dialysis (AD) on HD days", "PD": "1 g q24h or 500 mg q12h", "CRRT_II": "500 mg to 1 g every 8 hours", "CRRT_CI": "1 g infused over 12 hours, every 12 hours", "PIRRT_SLED": "1 g every 12 hours (Up to 2 g q8h if residual diuresis)" } } } },
-            "Piperacillin/Tazobactam": { tiers: { "High Dose (Antipseudomonal)": { loading: "4.5 g (for EI or CI)", doses: [{ min: 40.01, max: 130, dose: "4.5 g q6h (Extended Infusion preferred)" }, { min: 20, max: 40, dose: "3.375 g every 6 hours" }, { min: 0, max: 19.99, dose: "2.25 g every 6 hours" }], rrt: { "IHD": "4.5 g every 12 hours OR 2.25 g every 8 hours; plus a supplemental 2.25 g dose after dialysis on HD days", "PD": "4.5 g every 12 hours OR 2.25 g every 8 hours", "CRRT": "4.5 g every 8 hours OR 2.25 g every 6 hours OR 9 g/24h continuous infusion", "PIRRT_SLED": "3.375 g every 8 hours" } } } },
-            "Levofloxacin": { tiers: { "High Dose (750 mg q24h)": { loading: "750 mg x 1", doses: [{ min: 50, max: Infinity, dose: "750 mg every 24 hours" }, { min: 20, max: 49.99, dose: "750 mg every 48 hours" }, { min: 0, max: 19.99, dose: "500 mg every 48 hours" }], rrt: { "IHD": "500 mg every 48 hours", "PD": "500 mg every 48 hours", "CRRT": "500 mg every 48 hours" } } } },
-            "Ceftazidime": { tiers: { "Usual Dose (1 g q8h)": { loading: "Not Required", doses: [{ min: 50.01, max: Infinity, dose: "1 g every 8 hours" }, { min: 31, max: 50, dose: "1 g every 12 hours" }, { min: 16, max: 30.99, dose: "1 g every 24 hours" }, { min: 0, max: 15.99, dose: "500 mg every 24 hours" }], rrt: { "IHD": "500 mg - 1 g q24h post-HD OR 1 g 3x/week post-HD", "PD": "1 g every 24 hours", "CRRT_II": "2 g q8-12h", "CRRT_CI": "3 g/24h continuous infusion", "PIRRT_SLED": "2 g every 12 hours" } }, "High Dose (2 g q8h)": { loading: "2 g (for Extended Infusion)", doses: [{ min: 50.01, max: Infinity, dose: "2 g every 8 hours" }, { min: 31, max: 50, dose: "2 g every 12 hours" }, { min: 16, max: 30.99, dose: "2 g every 24 hours" }, { min: 0, max: 15.99, dose: "1 g every 24 hours" }], rrt: { "IHD": "500 mg - 1 g q24h post-HD OR 1 g 3x/week post-HD", "PD": "1 g every 24 hours", "CRRT_II": "2 g q8-12h", "CRRT_CI": "3 g/24h continuous infusion", "PIRRT_SLED": "2 g every 12 hours" } } } },
-            "Imipenem/Cilastatin": { tiers: { "Usual Dose (500 mg q6h)": { loading: "Not Required", doses: [{ min: 60, max: 130, dose: "500 mg every 6 hours" }, { min: 30, max: 59.99, dose: "250 mg every 6 hours OR 500 mg every 8 hours" }, { min: 15, max: 29.99, dose: "250 mg every 8 hours OR 500 mg every 12 hours" }, { min: 0, max: 14.99, dose: "Do not administer unless HD is instituted within 48 hours." }], rrt: { "IHD": "250 to 500 mg every 12 hours (give after HD)", "PD": "250 to 500 mg every 12 hours", "CRRT": "1 g loading dose, then 250 mg q6h or 500 mg q6-8h", "PIRRT_SLED": "500 mg to 1 g loading dose, then 250 mg q6h or 500 mg q8h (give after PIRRT). Note: Higher doses increase neurotoxicity risk; consider alternatives." } }, "Usual Dose (1 g q8h)": { loading: "Not Required", doses: [{ min: 60, max: 130, dose: "1 g every 8 hours" }, { min: 30, max: 59.99, dose: "500 mg every 8 hours" }, { min: 15, max: 29.99, dose: "250 mg every 8 hours OR 500 mg every 12 hours" }, { min: 0, max: 14.99, dose: "Do not administer unless HD is instituted within 48 hours." }], rrt: { "IHD": "250 to 500 mg every 12 hours (give after HD)", "PD": "250 to 500 mg every 12 hours", "CRRT": "1 g loading dose, then 250 mg q6h or 500 mg q6-8h", "PIRRT_SLED": "500 mg to 1 g loading dose, then 250 mg q6h or 500 mg q8h (give after PIRRT). Note: Higher doses increase neurotoxicity risk; consider alternatives." } }, "Usual Dose (1 g q6h)": { loading: "Not Required", doses: [{ min: 60, max: 130, dose: "1 g every 6 hours" }, { min: 30, max: 59.99, dose: "500 mg every 6 hours" }, { min: 15, max: 29.99, dose: "250 mg every 6 hours" }, { min: 0, max: 14.99, dose: "Do not administer unless HD is instituted within 48 hours." }], rrt: { "IHD": "250 to 500 mg every 12 hours (give after HD)", "PD": "250 to 500 mg every 12 hours", "CRRT": "1 g loading dose, then 250 mg q6h or 500 mg q6-8h", "PIRRT_SLED": "500 mg to 1 g loading dose, then 250 mg q6h or 500 mg q8h (give after PIRRT). Note: Higher doses increase neurotoxicity risk; consider alternatives." } } } },
-            "IV Fosfomycin": { tiers: { "All Systemic Infections": { loading: "6 - 8 g IV x 1 dose", pathogens: { "E. coli": [{ min: 80, max: 100, dose: "2 g q12h" }, { min: 40, max: 50, dose: "1 g q12h" }, { min: 20, max: 30, dose: "500 mg q12h" }], "K. pneumo": [{ min: 80, max: 100, dose: "4 g q12h" }, { min: 40, max: 50, dose: "2 g q12h" }, { min: 20, max: 30, dose: "1 g q12h" }], "Pseudo/Acine": [{ min: 80, max: 100, dose: "4 g q8h" }, { min: 40, max: 50, dose: "2 g q8h" }, { min: 20, max: 30, dose: "1 g q8h" }] } } } },
-            "Colistin": { tiers: { "All Indications": { loading: "300 mg IV (Universal)", doses: [{ min: 80.01, max: Infinity, dose: "150 mg every 8 - 12 hours" }, { min: 40.01, max: 80, dose: "150 mg every 12 hours" }, { min: 20.01, max: 40, dose: "100 mg every 12 hours" }, { min: 0, max: 20, dose: "150 mg every 24 hours" }], rrt: { "IHD": "Non-dialysis day: 150 mg q24h; Dialysis day: 200 mg post-dialysis", "CRRT": "150 mg every 8 hours", "PD": "100 mg every 24 hours" } } } }
-        };
-
-        const fullAtbTableData = [
-            { antibiotic: "Meropenem", indication: "Usual Dose (1 g q8h)", loading: "Not Required", crcl: ">50 to <130", dose: "1 g every 8 hours" }, { crcl: ">25 to ≤50", dose: "1 g every 12 hours" }, { crcl: "10 to ≤25", dose: "500 mg every 12 hours" }, { crcl: "IHD", dose: "500 mg every 24 hours, give after dialysis (AD) on HD days" },
-            { antibiotic: "Meropenem", indication: "High Dose (2 g q8h, CNS, CF, high MIC)", loading: "2 g (for Extended Infusion)", crcl: ">50 to <130", dose: "2 g every 8 hours" }, { crcl: ">25 to ≤50", dose: "2 g every 12 hours" }, { crcl: "10 to ≤25", dose: "1 g every 12 hours" }, { crcl: "IHD", dose: "1 g every 24 hours or 500 mg every 12 hours, give after dialysis (AD) on HD days" },
-            { antibiotic: "Meropenem", indication: "RRT Dosing (Specific Regimens)", loading: "1 g", crcl: "CRRT (Intermittent Infusion)", dose: "500 mg to 1 g every 8 hours" }, { crcl: "CRRT (Continuous Infusion)", dose: "1 g infused over 12 hours, every 12 hours" }, { crcl: "PIRRT / SLED", dose: "1 g every 12 hours (Up to 2 g q8h if residual diuresis)" },
-            { antibiotic: "Piperacillin/Tazobactam", indication: "High Dose (Antipseudomonal)", loading: "4.5 g (for EI or CI)", crcl: ">40 to <130", dose: "4.5 g q6h (Extended Infusion preferred)" }, { crcl: "20 - 40", dose: "3.375 g every 6 hours" }, { crcl: "<20", dose: "2.25 g every 6 hours" },
-            { antibiotic: "Piperacillin/Tazobactam", indication: "Renal Replacement Therapy", loading: "4.5 g (for EI or CI)", crcl: "Hemodialysis (IHD) / PD", dose: "4.5 g every 12 hours OR 2.25 g every 8 hours; plus a supplemental 2.25 g dose after dialysis on HD days" }, { crcl: "CRRT", dose: "4.5 g every 8 hours OR 2.25 g every 6 hours OR 9 g/24h continuous infusion" }, { crcl: "PIRRT / SLED", dose: "3.375 g every 8 hours" },
-            { antibiotic: "Levofloxacin", indication: "High Dose (750 mg q24h, HAP/VAP)", loading: "750 mg x 1", crcl: ">50", dose: "750 mg every 24 hours" }, { crcl: "20-49", dose: "750 mg every 48 hours" }, { crcl: "<20", dose: "500 mg every 48 hours" }, { crcl: "IHD / PD / CRRT", dose: "500 mg every 48 hours" },
-            { antibiotic: "Ceftazidime", indication: "Usual Dose (1 g q8h)", loading: "Not Required", crcl: ">50", dose: "1 g every 8 hours" }, { crcl: "31 - 50", dose: "1 g every 12 hours" }, { crcl: "16 - 30", dose: "1 g every 24 hours" }, { crcl: "≤15", dose: "500 mg every 24 hours" },
-            { antibiotic: "Ceftazidime", indication: "High Dose (2 g q8h, Antipseudomonal)", loading: "2 g (for Extended Infusion)", crcl: ">50", dose: "2 g every 8 hours" }, { crcl: "31 - 50", dose: "2 g every 12 hours" }, { crcl: "16 - 30", dose: "2 g every 24 hours" }, { crcl: "≤15", dose: "1 g every 24 hours" },
-            { antibiotic: "Ceftazidime", indication: "RRT Dosing (Specific Regimens)", loading: "2 g (for CRRT Continuous Infusion)", crcl: "Hemodialysis (IHD)", dose: "500 mg - 1 g q24h post-HD OR 1 g 3x/week post-HD" }, { crcl: "Peritoneal Dialysis (PD)", dose: "1 g every 24 hours" }, { crcl: "CRRT", dose: "2 g q8-12h OR 3 g/24h continuous infusion" }, { crcl: "PIRRT / SLED", dose: "2 g every 12 hours" },
-            { antibiotic: "Imipenem/Cilastatin", indication: "Usual Dose (500 mg q6h)", loading: "Not Required", crcl: "≥60 to <130", dose: "500 mg every 6 hours" }, { crcl: "≥30 to <60", dose: "250 mg every 6 hours OR 500 mg every 8 hours" }, { crcl: "≥15 to <30", dose: "250 mg every 8 hours OR 500 mg every 12 hours" }, { crcl: "<15", dose: "Do not administer unless HD is instituted within 48 hours." },
-            { antibiotic: "Imipenem/Cilastatin", indication: "Usual Dose (1 g q8h)", loading: "Not Required", crcl: "≥60 to <130", dose: "1 g every 8 hours" }, { crcl: "≥30 to <60", dose: "500 mg every 8 hours" }, { crcl: "≥15 to <30", dose: "250 mg every 8 hours OR 500 mg every 12 hours" }, { crcl: "<15", dose: "Do not administer unless HD is instituted within 48 hours." },
-            { antibiotic: "Imipenem/Cilastatin", indication: "Usual Dose (1 g q6h)", loading: "Not Required", crcl: "≥60 to <130", dose: "1 g every 6 hours" }, { crcl: "≥30 to <60", dose: "500 mg every 6 hours" }, { crcl: "≥15 to <30", dose: "250 mg every 6 hours" }, { crcl: "<15", dose: "Do not administer unless HD is instituted within 48 hours." },
-            { antibiotic: "Imipenem/Cilastatin", indication: "Renal Replacement Therapy", loading: "Note RRT Loading Doses", crcl: "IHD", dose: "250 to 500 mg every 12 hours (give after HD)" }, { crcl: "PD", dose: "250 to 500 mg every 12 hours" }, { crcl: "CRRT", dose: "1 g loading dose, then 250 mg q6h or 500 mg q6-8h" }, { crcl: "PIRRT / SLED", dose: "500 mg to 1 g loading dose, then 250 mg q6h or 500 mg q8h (give after PIRRT)" },
-            { antibiotic: "IV Fosfomycin", indication: "All Systemic Infections", loading: "6 - 8 g x 1 dose", crcl: "80 - 100", dose: "• E. coli: 2 g q12h • K. pneumo: 4 g q12h • Pseudo/Acine: 4 g q8h" }, { crcl: "40 - 50", dose: "• E. coli: 1 g q12h • K. pneumo: 2 g q12h • Pseudo/Acine: 2 g q8h" }, { crcl: "20 - 30", dose: "• E. coli: 500 mg q12h • K. pneumo: 1 g q12h • Pseudo/Acine: 1 g q8h" },
-            { antibiotic: "Colistin", indication: "All Indications", loading: "300 mg (Universal)", crcl: ">80", dose: "150 mg every 8 - 12 hours" }, { crcl: ">40 to 80", dose: "150 mg every 12 hours" }, { crcl: ">20 to 40", dose: "100 mg every 12 hours" }, { crcl: "≤20", dose: "150 mg every 24 hours" },
-            { antibiotic: "Colistin", indication: "All Indications (RRT)", loading: "300 mg (Universal)", crcl: "IHD", dose: "Non-dialysis day: 150 mg q24h; Dialysis day: 200 mg post-dialysis" }, { crcl: "CRRT", dose: "150 mg every 8 hours" }, { crcl: "PD", dose: "100 mg every 24 hours" },
-        ];
-
-        function populateAtbTable() {
-            const tbody = getEl('atb-reference-tbody');
-            let html = '';
-            fullAtbTableData.forEach(row => {
-                html += `<tr>
-                    <td class="font-bold ${row.antibiotic ? 'text-[var(--accent-primary)]' : ''}">${row.antibiotic || ''}</td>
-                    <td>${row.indication || ''}</td>
-                    <td>${row.loading || ''}</td>
-                    <td>${row.crcl || ''}</td>
-                    <td>${row.dose || ''}</td>
-                </tr>`;
-            });
-            tbody.innerHTML = html;
-        }
-        populateAtbTable();
-
-        getEl('atb-select').addEventListener('change', (e) => {
-             const atb = antibioticData[e.target.value];
-             const tierSelect = getEl('atb-dose-tier');
-             tierSelect.innerHTML = '';
-             getEl('pathogen-container').classList.add('hidden');
-             if(atb) {
-                 Object.keys(atb.tiers).forEach(t => tierSelect.add(new Option(t,t)));
-                 if(e.target.value === 'IV Fosfomycin') {
-                     getEl('pathogen-container').classList.remove('hidden');
-                     const pathSelect = getEl('atb-pathogen');
-                     pathSelect.innerHTML = '';
-                     Object.keys(atb.tiers["All Systemic Infections"].pathogens).forEach(p => pathSelect.add(new Option(p,p)));
-                 }
-             }
-        });
-
-        getEl('calculate-crcl-btn').addEventListener('click', () => {
-            const age = parseFloat(getEl('crcl-age').value);
-            const wt = parseFloat(getEl('crcl-weight').value);
-            const cr = parseFloat(getEl('crcl-creatinine').value);
-            const sex = getEl('crcl-sex').value;
-            
-            if(age && wt && cr) {
-                let crcl = ((140 - age) * wt) / (72 * cr);
-                if(sex === 'female') crcl *= 0.85;
-                const val = crcl.toFixed(1);
-                getEl('crcl-result').textContent = `${val} mL/min`;
-                getEl('atb-crcl').value = val;
-            }
-        });
-
-        getEl('calculate-atb-dose-btn').addEventListener('click', () => {
-            const atbName = getEl('atb-select').value;
-            const tierName = getEl('atb-dose-tier').value;
-            const crcl = parseFloat(getEl('atb-crcl').value);
-            let rrt = getEl('atb-rrt').value;
-            const resultEl = getEl('atb-dose-result');
-            
-            if (!atbName || !tierName) { resultEl.textContent = "Select Antibiotic"; return; }
-            
-            const atb = antibioticData[atbName];
-            const tier = atb.tiers[tierName];
-            let dose = "Not found";
-
-            if (rrt !== 'none') {
-                if (tier.rrt && tier.rrt[rrt]) { dose = tier.rrt[rrt]; } 
-                else if (tier.rrt && tier.rrt.CRRT && rrt.startsWith('CRRT')) { dose = tier.rrt.CRRT; }
-                else if (tier.rrt && tier.rrt.CRRT_II && rrt === 'CRRT_II') { dose = tier.rrt.CRRT_II; }
-                else if (tier.rrt && tier.rrt.CRRT_CI && rrt === 'CRRT_CI') { dose = tier.rrt.CRRT_CI; }
-                else if (tier.rrt && tier.rrt.PIRRT_SLED && rrt === 'PIRRT_SLED') { dose = tier.rrt.PIRRT_SLED; }
-            } else if (!isNaN(crcl)) {
-                if (atbName === 'IV Fosfomycin') {
-                    const path = getEl('atb-pathogen').value;
-                    const doses = tier.pathogens[path];
-                    for (const d of doses) { if (crcl >= d.min && crcl <= d.max) { dose = d.dose; break; } }
-                } else if (tier.doses) {
-                    const sorted = tier.doses.sort((a, b) => b.min - a.min);
-                    for (const d of sorted) { if (crcl >= d.min) { dose = d.dose; break; } }
-                }
-            } else {
-                dose = "Calculate CrCl first";
-            }
-            
-            resultEl.innerHTML = `<div class="font-bold text-[var(--accent-primary)]">${dose}</div>`;
-        });
-        getEl('show-loading-dose-btn').addEventListener('click', () => {
-             const atbName = getEl('atb-select').value;
-             const tierName = getEl('atb-dose-tier').value;
-             if(atbName && tierName) {
-                 getEl('atb-dose-result').innerHTML = `<div class="font-bold">Loading: ${antibioticData[atbName].tiers[tierName].loading}</div>`;
-             }
-        });
-
-
-        // --- ABG LOGIC (FULL MATH & DETAILED HTML) ---
-        function analyzeABG() {
-            const ph = parseFloat(getEl('ph').value);
-            const paco2 = parseFloat(getEl('paco2').value);
-            const hco3 = parseFloat(getEl('hco3').value);
-            const na = parseFloat(getEl('na').value);
-            const cl = parseFloat(getEl('cl').value);
-            const alb = parseFloat(getEl('albumin').value);
-            
-            const resSection = getEl('abgResultsSection');
-            const err = getEl('abgErrorMessage');
-
-            if(isNaN(ph) || isNaN(paco2) || isNaN(hco3)) {
-                err.classList.remove('hidden'); getEl('abgErrorMessageText').innerText = "Missing pH, PaCO2 or HCO3"; return;
-            }
-            err.classList.add('hidden');
-            resSection.classList.remove('hidden');
-
-            let disorder = "Normal ABG";
-            let isMetabolic = false;
-            let isRespiratory = false;
-
-            if(ph < 7.35) {
-                if(hco3 < 22) { disorder = "Metabolic Acidosis"; isMetabolic = true; }
-                else if(paco2 > 45) { disorder = "Respiratory Acidosis"; isRespiratory = true; }
-                else disorder = "Mixed Acidosis";
-            } else if(ph > 7.45) {
-                 if(hco3 > 26) { disorder = "Metabolic Alkalosis"; isMetabolic = true; }
-                 else if(paco2 < 35) { disorder = "Respiratory Alkalosis"; isRespiratory = true; }
-                 else disorder = "Mixed Alkalosis";
-            } else {
-                if(paco2 > 45 && hco3 > 26) disorder = "Compensated Respiratory Acidosis";
-                else if(paco2 < 35 && hco3 < 22) disorder = "Compensated Respiratory Alkalosis";
-                else if(hco3 < 22 && paco2 < 35) disorder = "Compensated Metabolic Acidosis";
-                else if(hco3 > 26 && paco2 > 45) disorder = "Compensated Metabolic Alkalosis";
-                else disorder = "Normal ABG or Mixed Disorder";
-            }
-
-            getEl('primaryDisorderResult').innerHTML = `<div class="result-card bg-slate-700/50 border-l-cyan-500"><h4>Primary Disorder</h4><p class="text-xl font-bold text-white mt-1">${disorder}</p></div>`;
-            getEl('anionGapResult').innerHTML = '';
-            getEl('compensationResult').innerHTML = '';
-            getEl('respiratoryTiming').classList.add('hidden');
-            let summary = `${disorder}.`;
-
-            // --- METABOLIC ACIDOSIS LOGIC ---
-            if(disorder.includes("Metabolic Acidosis")) {
-                 const expectedPaco2 = (1.5 * hco3) + 8;
-                 const lower = expectedPaco2 - 2;
-                 const upper = expectedPaco2 + 2;
-                 
-                 let compText = `appropriate respiratory compensation`;
-                 if(paco2 > upper) compText = `a concurrent primary respiratory acidosis`;
-                 else if(paco2 < lower) compText = `a concurrent primary respiratory alkalosis`;
-                 
-                 getEl('compensationResult').innerHTML = `
-                    <div class="result-card">
-                        <h4>Compensation Analysis</h4><h4 class="mt-2">Winter's Formula (Expected PaCO₂)</h4>
-                        <p class="mt-2">Calculates the expected respiratory compensation for the metabolic acidosis.</p>
-                        <p class="mt-2"><strong>Expected PaCO₂ Range:</strong> <span class="text-white font-bold">${lower.toFixed(2)} - ${upper.toFixed(2)} mmHg</span></p>
-                        <p><strong>Patient's PaCO₂:</strong> <span class="text-white font-bold">${paco2} mmHg</span></p>
-                        <p><strong>Interpretation:</strong> This indicates ${compText}.</p>
-                        <div class="formula"><p><strong>Expected PaCO₂ = (1.5 * [HCO₃⁻]) + 8 ± 2</strong></p><p>= (1.5 * ${hco3}) + 8 ± 2 = ${expectedPaco2.toFixed(2)} ± 2</p></div>
-                    </div>`;
-                 getEl('compensationResult').classList.remove('hidden');
-                 summary += ` with ${compText}.`;
-
-                 if(!isNaN(na) && !isNaN(cl) && !isNaN(alb)) {
-                     const ag = na - (cl + hco3);
-                     const corrAg = ag + 2.5 * (4 - alb);
-                     const type = corrAg > 12 ? "High Anion Gap" : "Non-Anion Gap";
-                     
-                     let deltaHtml = '';
-                     if(corrAg > 12) {
-                         const deltaRatio = (corrAg - 12) / (24 - hco3);
-                         let deltaInterp = "a pure High-Anion Gap Metabolic Acidosis.";
-                         if(deltaRatio < 1) deltaInterp = "a concurrent Non-Anion Gap Metabolic Acidosis.";
-                         else if(deltaRatio > 2) deltaInterp = "a concurrent metabolic alkalosis.";
-                         
-                         deltaHtml = `
-                            <h4 class="mt-4">Delta-Delta Gap (ΔΔ Gap)</h4><p class="mt-2">Used in HAGMA to detect underlying mixed metabolic disorders.</p>
-                            <p class="mt-2"><strong>Ratio (ΔAG/ΔHCO₃⁻):</strong> <span class="text-white font-bold">${deltaRatio.toFixed(2)}</span></p>
-                            <p><strong>Interpretation:</strong> Suggests ${deltaInterp}</p>
-                            <div class="formula"><p><strong>Ratio = (AG - 12) / (24 - [HCO₃⁻])</strong></p><p>= (${corrAg.toFixed(2)} - 12) / (24 - ${hco3}) = ${deltaRatio.toFixed(2)}</p></div>`;
-                         summary += ` ${type} Metabolic Acidosis (HAGMA/NAGMA). Suggests ${deltaInterp}`;
-                     } else {
-                         summary += ` ${type} Metabolic Acidosis (HAGMA/NAGMA).`;
-                     }
-
-                     getEl('anionGapResult').innerHTML = `
-                        <div class="result-card">
-                            <h4>Anion Gap (AG) Analysis</h4><p class="mt-2">The Anion Gap helps differentiate the cause of a metabolic acidosis.</p>
-                            <div class="mt-2 space-y-2"><p><strong>Calculated AG:</strong> <span class="text-white font-bold">${ag.toFixed(2)}</span></p><p><strong>Albumin-Corrected AG:</strong> <span class="text-white font-bold">${corrAg.toFixed(2)}</span></p><p><strong>Interpretation:</strong> <span class="text-white font-bold">${type} Metabolic Acidosis (HAGMA/NAGMA)</span></p></div>
-                            <div class="formula"><p><strong>Corrected AG = [Na⁺] - ([Cl⁻] + [HCO₃⁻]) + 2.5 * (4.0 - Albumin)</strong></p><p>= ${na} - (${cl} + ${hco3}) + 2.5 * (4.0 - ${alb}) = ${corrAg.toFixed(2)}</p></div>
-                            ${deltaHtml}
-                        </div>`;
-                     getEl('anionGapResult').classList.remove('hidden');
-                 }
-            } 
-            // --- RESPIRATORY LOGIC ---
-            else if (isRespiratory) {
-                getEl('respiratoryTiming').classList.remove('hidden');
-                const timing = document.querySelector('input[name="timing"]:checked')?.value;
-                
-                if(timing) {
-                    const dPaCO2 = Math.abs(paco2 - 40)/10;
-                    let expHCO3 = 0;
-                    let formulaStr = "";
-                    
-                    if(disorder.includes("Acidosis")) {
-                        if(timing === 'acute') {
-                            expHCO3 = 24 + (1 * dPaCO2);
-                            formulaStr = `Expected [HCO₃⁻] = 24 + 1 * ((${paco2} - 40) / 10)`;
-                        } else {
-                            expHCO3 = 24 + (4 * dPaCO2);
-                            formulaStr = `Expected [HCO₃⁻] = 24 + 4 * ((${paco2} - 40) / 10)`;
-                        }
-                    } else { // Alkalosis
-                        if(timing === 'acute') {
-                            expHCO3 = 24 - (2 * dPaCO2);
-                            formulaStr = `Expected [HCO₃⁻] = 24 - 2 * ((40 - ${paco2}) / 10)`;
-                        } else {
-                            expHCO3 = 24 - (5 * dPaCO2);
-                            formulaStr = `Expected [HCO₃⁻] = 24 - 5 * ((40 - ${paco2}) / 10)`;
-                        }
-                    }
-                    
-                    let interp = "appropriate metabolic compensation";
-                    if(hco3 > expHCO3 + 2) interp = "a concurrent metabolic alkalosis";
-                    else if(hco3 < expHCO3 - 2) interp = "a concurrent metabolic acidosis";
-
-                    getEl('compensationResult').innerHTML = `
-                        <div class="result-card">
-                            <h4>Compensation Analysis (${timing.charAt(0).toUpperCase() + timing.slice(1)})</h4>
-                            <p class="mt-2">Calculates the expected metabolic compensation for the respiratory disorder.</p>
-                            <p class="mt-2"><strong>Expected HCO₃⁻:</strong> <span class="text-white font-bold">~${expHCO3.toFixed(2)} mEq/L</span></p>
-                            <p><strong>Patient's HCO₃⁻:</strong> <span class="text-white font-bold">${hco3} mEq/L</span></p>
-                            <p><strong>Interpretation:</strong> Suggests ${interp}.</p>
-                            <div class="formula"><p><strong>${formulaStr}</strong> = ${expHCO3.toFixed(2)}</p></div>
-                        </div>`;
-                    getEl('compensationResult').classList.remove('hidden');
-                    summary += ` ${timing.charAt(0).toUpperCase()+timing.slice(1)} ${disorder} with ${interp}.`;
-                }
-            }
-            
-            getEl('summaryText').innerText = summary;
-        }
-
-        // --- CALCIUM LOGIC ---
-        function calculateCorrectedCalcium() {
-            const ca = parseFloat(getEl('totalCalcium').value);
-            const alb = parseFloat(getEl('albumin_ca').value);
-            if(ca && alb) {
-                const corr = ca + 0.8 * (4 - alb);
-                getEl('correctedCalciumResult').innerHTML = `Corrected Calcium: <span class="font-bold text-white">${corr.toFixed(2)} mg/dL</span>`;
-                getEl('correctedCalciumResult').classList.remove('hidden');
-            }
-        }
-
-        const infusionInputs = { rate: 'infusion_rate', weight: 'infusion_weight', caVol: 'infusion_caVolume', ivVol: 'infusion_ivVolume', drip: 'infusion_dripRate', tot: 'infusion_totalVolume' };
-        const CaContent = 9.3; 
-
-        function calculateInfusion(target) {
-            const vals = {};
-            for(let k in infusionInputs) vals[k] = parseFloat(getEl(infusionInputs[k]).value);
-            
-            if(isNaN(vals.tot) && !isNaN(vals.caVol) && !isNaN(vals.ivVol)) {
-                vals.tot = vals.caVol + vals.ivVol;
-                getEl('infusion_totalVolume').value = vals.tot;
-            }
-
-            let res = 0;
-            if(target === 'rate' && vals.caVol && vals.tot && vals.drip && vals.weight) {
-                res = ((vals.caVol * CaContent) / vals.tot * vals.drip) / vals.weight;
-            } else if (target === 'dripRate' && vals.rate && vals.weight && vals.caVol && vals.tot) {
-                res = (vals.rate * vals.weight * vals.tot) / (vals.caVol * CaContent);
-            } else if (target === 'caVolume' && vals.rate && vals.weight && vals.tot && vals.drip) {
-                res = (vals.rate * vals.weight * vals.tot) / (CaContent * vals.drip);
-            } else if (target === 'weight' && vals.rate && vals.caVol && vals.tot && vals.drip) {
-                res = ((vals.caVol * CaContent) / vals.tot * vals.drip) / vals.rate;
-            }
-
-            if(res) getEl(infusionInputs[target === 'rate' ? 'rate' : (target === 'weight' ? 'weight' : (target === 'caVolume' ? 'caVolume' : 'drip'))]).value = res.toFixed(2);
-        }
-
-        function toggleDurationSection() { getEl('durationSection').classList.toggle('hidden'); }
-        function calculateDuration(type){
-            const vol = parseFloat(getEl('duration_totalVolume').value);
-            const rate = parseFloat(getEl('duration_dripRate').value);
-            if(vol && rate) getEl('duration_time').value = (vol/rate).toFixed(1);
-        }
-
-
-        // --- CALSULIN LOGIC ---
-        let calculatedRegimen = null;
-        let calculatedTDD = null;
-
-        function showCalsulinTab(step) {
-            document.querySelectorAll('#calsulin .tab-content').forEach(el => el.classList.add('hidden'));
-            getEl('calsulin-'+step).classList.remove('hidden');
-            ['step1','step2','step3'].forEach(s => {
-                const btn = getEl('calsulin-'+s+'-btn');
-                if(s === step) { btn.classList.remove('btn-tech-outline'); btn.classList.add('btn-tech'); }
-                else { btn.classList.add('btn-tech-outline'); btn.classList.remove('btn-tech'); }
-            });
-        }
-
-        function roundDose(dose) {
-            if (dose <= 0) return 0;
-            const rounded = Math.round(dose);
-            if (rounded < 4) return 4;
-            return rounded % 2 === 0 ? rounded : rounded + 1;
-        }
-
-        const step1Inputs = document.querySelectorAll('#calsulin-step1 input');
-        step1Inputs.forEach(input => {
-            input.addEventListener('change', () => {
-                const method = document.querySelector('input[name="tddMethod"]:checked').value;
-                let tdd = 0;
-                const reg = document.querySelector('input[name="feedingFrequency"]:checked')?.value;
-                
-                if(method === 'calculate') {
-                    const wt = parseFloat(getEl('bodyWeight').value);
-                    const unit = parseFloat(document.querySelector('input[name="tddUnit"]:checked').value);
-                    if(wt && unit) tdd = wt * unit;
+                if (dailyTablets !== null && !isNaN(dailyTablets)) {
+                    errorEl.style.display = 'none';
+                    totalTablets = dailyTablets * days;
+                    dailyOrAvgTablets = dailyTablets;
                 } else {
-                    tdd = parseFloat(getEl('manualTdd').value);
+                    errorEl.style.display = 'block';
+                    return;
                 }
 
-                if(tdd > 0 && reg) {
-                    calculatedTDD = tdd;
-                    getEl('tddResult').innerText = tdd.toFixed(0) + ' U';
-                    
-                    let basal=0, bolus=0, schedHTML='';
-                    let log = [];
-                    
-                    if(reg === '3meals') {
-                        const rawBolus = tdd * 0.7; const rawBasal = tdd * 0.3;
-                        const riPerMeal = rawBolus / 3;
-                        const riDose = roundDose(riPerMeal);
-                        const nphDose = roundDose(rawBasal);
-                        basal = nphDose; bolus = riDose * 3;
-                        
-                        log.push(`2. Split (30/70): Basal=${rawBasal.toFixed(2)}U, Bolus=${rawBolus.toFixed(2)}U`);
-                        log.push(`3. Dosing: RI=${riPerMeal.toFixed(2)}U/meal, NPH=${rawBasal.toFixed(2)}U`);
-                        log.push(`4. Rounded: RI=${riDose}U, NPH=${nphDose}U`);
-                        
-                        schedHTML = `<tr><td>06:00</td><td>RI (Regular)</td><td>${riDose}</td></tr>
-                                     <tr><td>12:00</td><td>RI (Regular)</td><td>${riDose}</td></tr>
-                                     <tr><td>18:00</td><td>RI (Regular)</td><td>${riDose}</td></tr>
-                                     <tr><td>23:00</td><td>NPH</td><td>${nphDose}</td></tr>`;
-                        getEl('basalDose').value = nphDose; getEl('bolusDose').value = riDose;
-                        getEl('regimenType').value = 'basalBolus';
-                    } else if(reg === '4meals') {
-                        const rawBolus = tdd * 0.5; const rawBasal = tdd * 0.5;
-                        const riPerMeal = rawBolus / 4; const nphPerDose = rawBasal / 2;
-                        const riDose = roundDose(riPerMeal); const nphDose = roundDose(nphPerDose);
-                        basal = nphDose * 2; bolus = riDose * 4;
-                        
-                        log.push(`2. Split (50/50): Basal=${rawBasal.toFixed(2)}U, Bolus=${rawBolus.toFixed(2)}U`);
-                        log.push(`3. Dosing: RI=${riPerMeal.toFixed(2)}U/feed, NPH=${nphPerDose.toFixed(2)}U/dose`);
-                        log.push(`4. Rounded: RI=${riDose}U, NPH=${nphDose}U`);
+            } else { // Weekly Dose Logic
+                const dayRows = document.querySelectorAll('.specific-day-row');
+                if (dayRows.length === 0) {
+                    showModal("Please add at least one day-specific dose.");
+                    return;
+                }
 
-                        schedHTML = `<tr><td>06:00</td><td>RI + NPH</td><td>${riDose} + ${nphDose}</td></tr>
-                                     <tr><td>12:00</td><td>RI (Regular)</td><td>${riDose}</td></tr>
-                                     <tr><td>18:00</td><td>RI + NPH</td><td>${riDose} + ${nphDose}</td></tr>
-                                     <tr><td>23:00</td><td>RI (Regular)</td><td>${riDose}</td></tr>`;
-                        getEl('basalDose').value = nphDose; getEl('bolusDose').value = riDose;
-                        getEl('regimenType').value = 'basalBolus';
-                    } else { // Premixed
-                        const rawMorning = (tdd * 2) / 3; const rawEvening = tdd / 3;
-                        const morningDose = roundDose(rawMorning); const eveningDose = roundDose(rawEvening);
-                        basal = Math.round((morningDose+eveningDose)*0.7); bolus = Math.round((morningDose+eveningDose)*0.3); // Approximate display for step 1 UI
-                        
-                        log.push(`2. Split (2/3, 1/3): Morning=${rawMorning.toFixed(2)}U, Evening=${rawEvening.toFixed(2)}U`);
-                        log.push(`3. Rounded: Morning=${morningDose}U, Evening=${eveningDose}U`);
+                const dosesByDay = {};
+                let hasInputError = false;
 
-                        schedHTML = `<tr><td>06:00</td><td>Premixed (70/30)</td><td>${morningDose}</td></tr>
-                                     <tr><td>18:00</td><td>Premixed (70/30)</td><td>${eveningDose}</td></tr>`;
-                        getEl('premixedMorningDose').value = morningDose; getEl('premixedEveningDose').value = eveningDose;
-                        getEl('regimenType').value = 'premixed';
+                dayRows.forEach(row => {
+                    const day = row.querySelector('select').value;
+                    const doseInput = row.querySelector('input[type="number"]');
+                    const dose = parseFloat(doseInput.value);
+
+                    if (day && !isNaN(dose) && dose > 0) {
+                        dosesByDay[day] = (dosesByDay[day] || 0) + dose;
+                    } else if (day || doseInput.value) {
+                        hasInputError = true;
                     }
+                });
 
-                    getEl('basalResult').innerText = basal + ' U';
-                    getEl('bolusResult').innerText = bolus + ' U';
-                    getEl('noSelectionMessage').classList.add('hidden');
-                    getEl('calsulin-resultsContent').classList.remove('hidden');
-                    getEl('scheduleBody').innerHTML = schedHTML;
-                    getEl('calculationText').innerText = log.join('\n');
+                if (hasInputError) {
+                    showModal("Please ensure all day-specific dose rows are filled out correctly (select a day and enter a valid dose).");
+                    return;
                 }
-            });
-        });
-
-        document.querySelectorAll('input[name="tddMethod"]').forEach(r => {
-            r.addEventListener('change', (e) => {
-                if(e.target.value === 'calculate') { getEl('calculationInputs').classList.remove('hidden'); getEl('manualTddInput').classList.add('hidden'); }
-                else { getEl('calculationInputs').classList.add('hidden'); getEl('manualTddInput').classList.remove('hidden'); }
-            });
-        });
-        
-        // Update Inputs on Step 2 Change
-        getEl('regimenType').addEventListener('change', () => {
-             const isBB = getEl('regimenType').value === 'basalBolus';
-             getEl('basalBolusInputs').classList.toggle('hidden', !isBB);
-             getEl('premixedInputs').classList.toggle('hidden', isBB);
-        });
-
-        function proceedToStep2() { showCalsulinTab('step2'); getEl('regimenType').dispatchEvent(new Event('change')); }
-
-        function generateOrder() {
-            const type = getEl('regimenType').value;
-            let text = "";
-            if(type === 'basalBolus') {
-                const feeding = document.querySelector('input[name="feedingSchedule"]:checked').value;
-                const basal = getEl('basalDose').value;
-                const bolus = getEl('bolusDose').value;
-                const bType = getEl('basalType').value;
-                const boType = getEl('bolusType').value;
-                const isFour = feeding === '4';
-                const times = isFour ? '6, 12, 18, 23น' : '6, 12, 18';
-                const basalTime = (isFour && bType==='NPH') ? 'sc at 6, 18.00' : 'sc at 23.00';
                 
-                // Logic from original:
-                let basalLineBase, basalLinePlus2, basalLinePlus4, basalLineMinus;
-                if (isFour) {
-                    basalLineBase = `${bType} ${basal} u ${basalTime}`;
-                    basalLinePlus2 = basalLineBase; basalLinePlus4 = basalLineBase; basalLineMinus = basalLineBase;
-                } else {
-                    basalLineBase = `${bType} ${basal} u ${basalTime}`;
-                    basalLinePlus2 = `${bType} ${parseInt(basal)+2} u ${basalTime}`;
-                    basalLinePlus4 = `${bType} ${parseInt(basal)+4} u ${basalTime}`;
-                    basalLineMinus = `${bType} ${Math.max(0,parseInt(basal)-2)} u ${basalTime}`;
+                if (Object.keys(dosesByDay).length === 0) {
+                    showModal("Please enter at least one valid day-specific dose.");
+                    return;
                 }
 
-                text = `Continue order\n- DTX ac at ${isFour ? '6, 12, 18, 23น' : '6, 12, 18, and hs'}\n- Off Insulin เดิม\n- ${basalLineBase}\n- ${boType} ${bolus} u sc ac at ${times}\n\n- If dtx >180:\n  - ${basalLinePlus2}\n  - ${boType} ${parseInt(bolus)+2} u sc ac at ${times}\n- If dtx >250:\n  - ${basalLinePlus4}\n  - ${boType} ${parseInt(bolus)+4} u sc ac at ${times}\n- If dtx <140:\n  - ${basalLineMinus}\n  - ${boType} ${Math.max(0,parseInt(bolus)-(isFour?2:4))} u sc ac at ${times}\n\n- If dtx <100, >300, ปรับ feed, NPO pls notify Endocrine`;
-            } else {
-                const morn = getEl('premixedMorningDose').value;
-                const eve = getEl('premixedEveningDose').value;
-                const ins = getEl('premixedType').value;
-                text = `Continue order\n- Off Insulin เดิม\n- DTX ac bid and hs\n- ${ins} ${morn}-0-${eve} u sc ac\n\n- If DTX < 140:\n  - ${ins} ${Math.max(0,morn-2)}-0-${Math.max(0,eve-2)} u sc ac\n- If DTX > 180:\n  - ${ins} ${parseInt(morn)+2}-0-${parseInt(eve)+2} u sc ac\n- If DTX > 250:\n  - ${ins} ${parseInt(morn)+4}-0-${parseInt(eve)+4} u sc ac\n\n- If dtx <100, >300, ปรับ feed, NPO pls notify Endocrine`;
+                const startDate = new Date(currentDateInput.value);
+                for (let i = 0; i < days; i++) {
+                    const currentDate = new Date(startDate);
+                    currentDate.setDate(startDate.getDate() + i);
+                    const dayIndex = (currentDate.getDay() + 6) % 7; // Monday=0, Sunday=6
+                    const dayName = daysOfWeek[dayIndex];
+                    
+                    if (dosesByDay[dayName]) {
+                        totalTablets += dosesByDay[dayName];
+                    }
+                }
+                
+                dailyOrAvgTablets = days > 0 ? totalTablets / days : 0;
+                dailyDoseLabel = "Avg. Tablets Per Day";
+
+                const breakdownText = Object.entries(dosesByDay)
+                                            .map(([day, dose]) => `${day}: ${dose} tab(s)`)
+                                            .join('; ');
+                document.getElementById('simpleWeeklyBreakdownText').textContent = breakdownText;
+                weeklyBreakdownEl.classList.remove('hidden');
             }
-            
-            getEl('orderOutput').textContent = text;
-            getEl('copyButton').classList.remove('hidden');
-        }
 
-        function copyOrderText() { copyToClipboard(getEl('orderOutput').textContent); }
-        function useCalculatedTDD() { if(calculatedTDD) { getEl('tddCorrection').value = calculatedTDD; calculateCorrectionDose(); } }
-
-        function calculateCorrectionDose() {
-            const tdd = parseFloat(getEl('tddCorrection').value);
-            const current = parseFloat(getEl('current-bg').value);
-            const target = parseFloat(getEl('target-bg').value);
-            const rule = parseFloat(document.querySelector('input[name="isf-rule"]:checked').value);
-
-            if(tdd && current && target && rule) {
-                const isf = rule / tdd;
-                const diff = current - target;
-                let dose = 0;
-                if(diff > 0) dose = diff / isf;
-                getEl('results-content-correction').innerHTML = `
-                    <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="text-sm text-gray-500">1. ISF</p><p class="text-lg font-semibold text-gray-800">${rule} / ${tdd} = <strong>${isf.toFixed(2)}</strong></p></div>
-                    <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="text-sm text-gray-500">2. Deficit</p><p class="text-lg font-semibold text-gray-800">${current} - ${target} = <strong>${diff}</strong></p></div>
-                    <div class="mt-5 p-4 bg-blue-600 text-white rounded-lg text-center shadow-lg"><p class="text-sm uppercase tracking-wider">Recommended Correction Dose</p><p class="text-4xl font-bold">${Math.round(dose)} units</p></div>`;
-            }
+            const formatNumber = (num) => num.toFixed(2).replace(/\.00$/, '').replace(/\.([1-9])0$/, '.$1');
+            document.getElementById('simpleDailyDoseLabel').textContent = dailyDoseLabel;
+            document.getElementById('simpleDailyTablets').textContent = formatNumber(dailyOrAvgTablets);
+            document.getElementById('simpleTotalTablets').textContent = formatNumber(totalTablets);
+            resultEl.style.display = 'block';
         }
 
 
-        // --- NUTRITION LOGIC (SMART PLACEHOLDER) ---
-        const nutritionFields = [
-            { id: 'ward', default: 'Ward 6ข ขอ consult nutrition ค่า' },
-            { id: 'name', default: 'นายกิตติกร เกิดกุล' },
-            { id: 'age', default: '55 yr' },
-            { id: 'hn', default: '008997-68' },
-            { id: 'admit', default: '13/05/68' },
-            { id: 'height', default: '165 cm' },
-            { id: 'ubw', default: '49 kg (12/67)' },
-            { id: 'abw', default: '39 kg (12/05/68)' },
-            { id: 'bmi', default: '', readonly: true },
-            { id: 'underlying', default: 'not known u/d (last check-up 2566)' },
-            { id: 'diagnoses', default: '>> 1st diagnosis : primary CA lung (NSCLC) with Lt main bronchus invade with compress esophagus\n>> obstructive pneumonia at LUL (on tazocin)' },
-            { id: 'acp', default: '> คุยล่าสุด (ลูกสาว 13/05/68) full med, full CPR ค่ะ' },
-            { id: 'enteral', default: 'มีปัญหา mass compress esophagus (can’t pass NG)' },
-            { id: 'npo', default: '- CA lung with compress esophagus (mechanical obstruction) ไม่สามารถ enteral feeding ได้ + can’t pass NG ; NPO ตั้งแต่ 13/05/68-now\n- Consult GI plan set PEG 29/05/68 ***' },
-            { id: 'allergies', default: '- ไม่มีค่ะ' },
-            { id: 'volume', default: '- hypovolemia' },
-            { id: 'io', default: '500/200 (เวรดึกที่ผ่านมา)' },
-            { id: 'bun_cr', default: '7/0.58' },
-            { id: 'bun_cr_date', default: '13/05/68' },
-            { id: 'labs', default: 'lab ล่าสุด elyte phos triglyceride AST ALT และกด compare lab na k phos (ดังรูป)' },
-            { id: 'cxr', default: 'CXR ล่าสุด (ดังรูป)' },
-            { id: 'naf', default: 'ประเมิน NAF (ดังแนบค่ะ)' }
-        ];
+        // --- WARFARIN CALCULATOR ---
+        const dailyDoseContainer = document.querySelector('#daily-dose-section .grid');
 
-        const nutriContainer = getEl('nutrition-form-container');
-        const nutriLabels = { ward: 'Ward & Consult Request:', name: 'Patient Name:', age: 'Age (yr):', hn: 'HN:', admit: 'Admit Date:', height: 'Height (cm):', ubw: 'UBW (Usual Body Weight):', abw: 'ABW (Actual Body Weight):', bmi: 'BMI (kg/m²):', underlying: 'Underlying Disease:', diagnoses: 'Diagnoses (Nutrition-related):', acp: 'Advance Care Planning (ACP):', enteral: 'Enteral Feed Contraindications:', npo: 'NPO Details:', allergies: 'Food Allergies/Intolerances/Dislikes:', volume: 'Current Volume Status:', io: 'Latest I/O:', bun_cr: 'BUN/Cr:', bun_cr_date: 'Date:', labs: 'Latest Labs:', cxr: 'Latest CXR:', naf: 'NAF Assessment:' };
-
-        nutritionFields.forEach(f => {
+        daysOfWeek.forEach(day => {
             const div = document.createElement('div');
-            div.className = "flex flex-col gap-1";
-            div.innerHTML = `<label class="text-xs text-[var(--text-muted)] font-bold">${nutriLabels[f.id] || f.id.toUpperCase()}</label>`;
+            div.innerHTML = `
+                <label for="dose-${day.toLowerCase()}" class="block text-xs font-bold uppercase tracking-wider mb-1 opacity-70">${day.substring(0,3)}</label>
+                <input type="number" id="dose-${day.toLowerCase()}" data-day="${day}" class="input-field daily-dose-input text-center" placeholder="0" min="0" step="0.5">
+            `;
+            dailyDoseContainer.appendChild(div);
+        });
+
+        function getTabletCombination(dose, allowedStrengths = [5, 3, 2]) {
+            if (dose === 0) return { '5mg': 0, '3mg': 0, '2mg': 0 };
+            if (dose < 1 || dose % 0.5 !== 0) return null;
+
+            const max_pills = 4;
+            const strengths = [5, 3, 2].filter(s => allowedStrengths.includes(s));
             
-            const input = f.default.includes('\n') ? document.createElement('textarea') : document.createElement('input');
-            input.id = 'n_' + f.id;
-            input.className = "input-tech text-xs";
-            input.value = f.default;
-            
-            if(f.readonly) {
-                input.readOnly = true;
-            } else {
-                // Store default
-                input.dataset.default = f.default;
-                input.classList.add('placeholder-active');
-                
-                // Focus: Clear if default
-                input.addEventListener('focus', function() {
-                    if (this.value === this.dataset.default) {
-                        this.value = '';
-                        this.classList.remove('placeholder-active');
+            let singleStrengthSolutions = [];
+            for (const s of strengths) {
+                if ((dose / s) % 0.5 === 0) {
+                    const num_tabs = dose / s;
+                    if (num_tabs <= max_pills) {
+                        let combo = { '5mg': 0, '3mg': 0, '2mg': 0 };
+                        combo[`${s}mg`] = num_tabs;
+                        singleStrengthSolutions.push({ combo, totalPills: num_tabs });
                     }
-                });
-                
-                // Blur: Restore if empty
-                input.addEventListener('blur', function() {
-                    if (this.value.trim() === '') {
-                        this.value = this.dataset.default;
-                        this.classList.add('placeholder-active');
-                    }
-                });
-            }
-
-            if(input.tagName === 'TEXTAREA') input.rows = f.default.split('\n').length || 2;
-            
-            div.appendChild(input);
-            nutriContainer.appendChild(div);
-        });
-        
-        const updateBMI = () => {
-             const hVal = parseFloat(getEl('n_height').value);
-             const wVal = parseFloat(getEl('n_abw').value);
-             if(hVal && wVal) getEl('n_bmi').value = (wVal/((hVal/100)**2)).toFixed(2) + ' kg/m²';
-        };
-        getEl('n_height').addEventListener('input', updateBMI);
-        getEl('n_abw').addEventListener('input', updateBMI);
-        updateBMI(); 
-
-        getEl('nutritionGenerateBtn').addEventListener('click', () => {
-            let txt = "";
-            // Replicating exact structure from original
-            txt += `Ward & Consult Request: ${getEl('n_ward').value}\n\n`;
-            txt += `Patient Name: ${getEl('n_name').value}\nAge: ${getEl('n_age').value}\nHN: ${getEl('n_hn').value}\nAdmit Date: ${getEl('n_admit').value}\n\n`;
-            txt += `Baseline Patient:\n1. Height: ${getEl('n_height').value}\n2. UBW: ${getEl('n_ubw').value}\n3. ABW: ${getEl('n_abw').value}\nBMI: ${getEl('n_bmi').value}\n\n`;
-            txt += `Underlying Disease:\n${getEl('n_underlying').value}\n\n`;
-            txt += `Diagnoses (Nutrition-related):\n${getEl('n_diagnoses').value}\n\n`;
-            txt += `Advance Care Planning (ACP):\n${getEl('n_acp').value}\n\n`;
-            txt += `Enteral Feed Contraindications:\n${getEl('n_enteral').value}\n\n`;
-            txt += `NPO Details:\n${getEl('n_npo').value}\n\n`;
-            txt += `Food Allergies/Intolerances/Dislikes:\n${getEl('n_allergies').value}\n\n`;
-            txt += `Current Volume Status:\n${getEl('n_volume').value}\n\n`;
-            txt += `Latest I/O:\n${getEl('n_io').value}\n\n`;
-            txt += `BUN/Cr: ${getEl('n_bun_cr').value} (Date: ${getEl('n_bun_cr_date').value})\n\n`;
-            txt += `Latest Labs:\n${getEl('n_labs').value}\n\n`;
-            txt += `Latest CXR:\n${getEl('n_cxr').value}\n\n`;
-            txt += `NAF Assessment:\n${getEl('n_naf').value}`;
-            
-            getEl('nutritionOutput').value = txt;
-        });
-        getEl('nutritionCopyBtn').addEventListener('click', () => copyToClipboard(getEl('nutritionOutput').value));
-        getEl('nutritionSaveBtn').addEventListener('click', () => {
-             const note = getEl('nutritionOutput').value;
-             if (!note) return;
-             const hn = getEl('n_hn').value.replace(/\//g, '');
-             const admit = getEl('n_admit').value.replace(/\//g, '');
-             const filename = `consult_note_${hn}_${admit}.txt`;
-             const blob = new Blob([note], { type: 'text/plain;charset=utf-8' });
-             const link = document.createElement('a');
-             link.href = URL.createObjectURL(blob);
-             link.download = filename;
-             document.body.appendChild(link);
-             link.click();
-             document.body.removeChild(link);
-        });
-
-
-        // --- STEROID LOGIC ---
-        const steroidEquiv = { hydrocortisone: 20, cortisone: 25, prednisone: 5, prednisolone: 5, methylprednisolone: 4, triamcinolone: 4, dexamethasone: 0.75, betamethasone: 0.6 };
-        function calculateSteroidEquivalence() {
-            const drug = getEl('steroid_drug').value;
-            const dose = parseFloat(getEl('steroid_dose').value);
-            const list = getEl('steroidResultsList');
-            list.innerHTML = '';
-            getEl('steroidResultsSection').classList.remove('hidden');
-
-            if(dose) {
-                const base = dose / steroidEquiv[drug];
-                for(let k in steroidEquiv) {
-                    const equivDose = (base * steroidEquiv[k]).toFixed(2); // Original logic used exact math, rounding handled in display if needed, original displayed 2 decimals
-                    // Original formatting:
-                    let displayDose = equivDose;
-                    if (parseFloat(equivDose) < 1) displayDose = parseFloat(equivDose).toFixed(2);
-                    else if (parseFloat(equivDose) < 10) displayDose = parseFloat(equivDose).toFixed(1);
-                    else displayDose = parseFloat(equivDose).toFixed(0);
-
-                    const div = document.createElement('div');
-                    div.className = "flex justify-between p-2 rounded text-xs " + (k===drug ? "bg-[var(--accent-primary)] text-black font-bold" : "bg-[var(--bg-input)] border border-[var(--border-color)]");
-                    div.innerHTML = `<span>${k.charAt(0).toUpperCase() + k.slice(1)}</span><span>${displayDose} mg</span>`;
-                    list.appendChild(div);
                 }
             }
+            if (singleStrengthSolutions.length > 0) {
+                singleStrengthSolutions.sort((a, b) => a.totalPills - b.totalPills);
+                return singleStrengthSolutions[0].combo;
+            }
+
+            if (strengths.length < 2) return null;
+            const pairs = [];
+            for (let i = 0; i < strengths.length; i++) {
+                for (let j = i + 1; j < strengths.length; j++) {
+                    pairs.push([strengths[i], strengths[j]]);
+                }
+            }
+
+            let twoStrengthSolutions = [];
+            for (const [s1, s2] of pairs) {
+                for (let n1 = 0; n1 <= max_pills; n1 += 0.5) {
+                    for (let n2 = 0; n2 <= max_pills; n2 += 0.5) {
+                        if (n1 + n2 > max_pills || n1 + n2 === 0) continue;
+                        if (Math.abs((n1 * s1) + (n2 * s2) - dose) < 0.01) {
+                            let combo = { '5mg': 0, '3mg': 0, '2mg': 0 };
+                            combo[`${s1}mg`] = n1;
+                            combo[`${s2}mg`] = n2;
+                            const numHalves = (n1 % 1 !== 0 ? 1 : 0) + (n2 % 1 !== 0 ? 1 : 0);
+                            const totalPills = n1 + n2;
+                            twoStrengthSolutions.push({ combo, numHalves, totalPills });
+                        }
+                    }
+                }
+            }
+            if (twoStrengthSolutions.length > 0) {
+                twoStrengthSolutions.sort((a, b) => {
+                    if (a.numHalves !== b.numHalves) return a.numHalves - b.numHalves;
+                    return a.totalPills - b.totalPills;
+                });
+                return twoStrengthSolutions[0].combo;
+            }
+            
+            if (strengths.length < 3) return null;
+            let threeStrengthSolutions = [];
+            for (let n5 = 0; n5 <= max_pills; n5 += 0.5) {
+                for (let n3 = 0; n3 <= max_pills; n3 += 0.5) {
+                    for (let n2 = 0; n2 <= max_pills; n2 += 0.5) {
+                        if (n5 + n3 + n2 > max_pills || n5 + n3 + n2 === 0) continue;
+                        if (n5 > 0 && n3 > 0 && n2 > 0 && Math.abs((n5 * 5) + (n3 * 3) + (n2 * 2) - dose) < 0.01) {
+                             const combo = { '5mg': n5, '3mg': n3, '2mg': n2 };
+                             const numHalves = (n5 % 1 !== 0 ? 1 : 0) + (n3 % 1 !== 0 ? 1 : 0) + (n2 % 1 !== 0 ? 1 : 0);
+                             const totalPills = n5 + n3 + n2;
+                             threeStrengthSolutions.push({ combo, numHalves, totalPills });
+                        }
+                    }
+                }
+            }
+             if (threeStrengthSolutions.length > 0) {
+                  threeStrengthSolutions.sort((a, b) => {
+                        if (a.numHalves !== b.numHalves) return a.numHalves - b.numHalves;
+                        return a.totalPills - b.totalPills;
+                   });
+                   return threeStrengthSolutions[0].combo;
+             }
+            
+            return null;
+        }
+
+        function findBestWeeklyCombination(doses) {
+            const uniqueDoses = [...new Set(doses)];
+            const strengthSubsets = [ [5], [3], [2], [5,2], [3,2], [5,3], [5,3,2] ];
+
+            for (const allowedStrengths of strengthSubsets) {
+                let isPossible = true;
+                let regimenCombinations = {};
+                for (const dose of uniqueDoses) {
+                    const combo = getTabletCombination(dose, allowedStrengths);
+                    if (!combo) {
+                        isPossible = false;
+                        break;
+                    }
+                    regimenCombinations[dose] = combo;
+                }
+                if (isPossible) {
+                    return regimenCombinations;
+                }
+            }
+            return null;
+        }
+
+        function generateAndScoreDistributions(twd) {
+            let possibleSolutions = [];
+            const avgDose = twd / 7;
+
+            for (let activeDays = 7; activeDays >= 5; activeDays--) {
+                const offDays = 7 - activeDays;
+                if (twd > 0) {
+                    const singleDose = twd / activeDays;
+                    if (singleDose > 0 && singleDose % 0.5 === 0 && getTabletCombination(singleDose)) {
+                        possibleSolutions.push({ doses: [...Array(activeDays).fill(singleDose), ...Array(offDays).fill(0)] });
+                    }
+                }
+                if (activeDays > 1) {
+                    for (let daysA = activeDays - 1; daysA >= Math.ceil(activeDays / 2); daysA--) {
+                        const daysB = activeDays - daysA;
+                        for (let i = -8; i <= 8; i++) { 
+                            const doseA = Math.round(avgDose * 2) / 2 + i * 0.5;
+                            if (doseA <= 0 || !getTabletCombination(doseA)) continue;
+                            const doseB = (twd - daysA * doseA) / daysB;
+                            if (doseB >= 0 && doseB % 0.5 === 0 && getTabletCombination(doseB)) {
+                                possibleSolutions.push({ doses: [...Array(daysA).fill(doseA), ...Array(daysB).fill(doseB), ...Array(offDays).fill(0)] });
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (possibleSolutions.length === 0) return [];
+            const uniqueSolutions = Array.from(new Set(possibleSolutions.map(s => JSON.stringify(s.doses.sort((a,b)=>b-a)))))
+                                          .map(s => ({ doses: JSON.parse(s) }));
+
+            uniqueSolutions.forEach(sol => {
+                const { doses } = sol;
+                const combinations = findBestWeeklyCombination(doses);
+                if (!combinations) return; 
+
+                let numStrengths = 0;
+                let totalHalfDoses = 0;
+                const strengthsUsed = new Set();
+                
+                doses.forEach(d => {
+                    const combo = combinations[d];
+                    if (combo) {
+                        if(combo['5mg'] > 0) strengthsUsed.add(5);
+                        if(combo['3mg'] > 0) strengthsUsed.add(3);
+                        if(combo['2mg'] > 0) strengthsUsed.add(2);
+                        totalHalfDoses += Object.values(combo).filter(num => num % 1 !== 0).length;
+                    }
+                });
+                numStrengths = strengthsUsed.size;
+
+                const variance = doses.reduce((acc, val) => acc + Math.pow(val - avgDose, 2), 0) / 7;
+                const uniqueDoseCount = [...new Set(doses.filter(d => d > 0))].length;
+                const numOffDays = doses.filter(d => d === 0).length;
+
+                sol.evenScore = variance * 10000 + numStrengths * 100 + totalHalfDoses * 10 + uniqueDoseCount;
+                sol.easyScore = numStrengths * 10000 + totalHalfDoses * 1000 + uniqueDoseCount * 100 + numOffDays * 10 + variance;
+                sol.regimenInfo = { combinations };
+            });
+
+            return uniqueSolutions.filter(sol => sol.regimenInfo);
+        }
+
+        function formatRegimen(doses) {
+            const counts = doses.reduce((acc, dose) => {
+                acc[dose] = (acc[dose] || 0) + 1;
+                return acc;
+            }, {});
+
+            return Object.entries(counts)
+                .sort((a, b) => b[0] - a[0])
+                .map(([dose, count]) => `${dose}mg x ${count} day${count > 1 ? 's' : ''}`)
+                .join(', ');
+        }
+
+        function applyDistribution(doses, regimenInfo) {
+            const sortedDoses = [...doses].sort((a, b) => b - a);
+            daysOfWeek.forEach((day, index) => {
+                const input = document.getElementById(`dose-${day.toLowerCase()}`);
+                input.value = Number(sortedDoses[index] || 0).toFixed(2).replace(/\.00$/, '');
+            });
+            appliedRegimenCombinations = regimenInfo.combinations;
+            document.getElementById('twdOptionsContainer').classList.add('hidden');
+            switchWarfarinTab('daily');
         }
         
-        // --- BETA BLOCKER LOGIC ---
-        const bbEquiv = { atenolol: 50, bisoprolol: 5, carvedilol: 25, metoprolol_t: 50, metoprolol_s: 50, nebivolol: 5, propranolol: 40 };
-        function calculateBetaBlockerEquivalence() {
-             const drug = getEl('bb_drug').value;
-             const dose = parseFloat(getEl('bb_dose').value);
-             const list = getEl('bbResultsList');
-             list.innerHTML = '';
-             
-             if(dose) {
-                 getEl('bbResultsSection').classList.remove('hidden');
-                 const base = dose / bbEquiv[drug];
-                 for(let k in bbEquiv) {
-                     const val = (base * bbEquiv[k]).toFixed(1);
-                     const div = document.createElement('div');
-                     div.className = "flex justify-between p-2 rounded text-xs " + (k===drug ? "border-l-4 border-[var(--accent-primary)] bg-[var(--bg-input)]" : "border border-[var(--border-color)] opacity-75");
-                     div.innerHTML = `<span>${k}</span><span>${val} mg</span>`;
-                     list.appendChild(div);
-                 }
-             }
+        function distributeTWD() {
+            const twd = parseFloat(document.getElementById('twdInput').value);
+            const optionsContainer = document.getElementById('twdOptionsContainer');
+            optionsContainer.innerHTML = '';
+
+            if (isNaN(twd) || twd < 0) {
+                showModal("Please enter a valid Total Weekly Dose.");
+                return;
+            }
+
+            const allSolutions = generateAndScoreDistributions(twd);
+
+            if (allSolutions.length === 0) {
+                showModal(`Could not find a simple, easy-to-remember distribution for TWD = ${twd}mg. Please enter daily doses manually.`);
+                return;
+            }
+
+            allSolutions.sort((a, b) => a.evenScore - b.evenScore);
+            const evenOption = allSolutions[0];
+            allSolutions.sort((a, b) => a.easyScore - b.easyScore);
+            const easyOption = allSolutions[0];
+            
+            const createOptionCard = (solution, title, subtitle) => {
+                const card = document.createElement('div');
+                card.className = 'border rounded-lg p-4 transition-all cursor-pointer hover:bg-white/10';
+                card.style.borderColor = 'var(--glass-border)';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-semibold text-lg" style="color: var(--accent-color)">${title}</h4>
+                            <p class="text-xs opacity-70 mb-2">${subtitle}</p>
+                            <p class="text-xl font-bold font-mono tracking-tight">${formatRegimen(solution.doses)}</p>
+                        </div>
+                        <button class="btn-secondary !font-medium !py-1 !px-3">Apply</button>
+                    </div>
+                `;
+                card.onclick = () => applyDistribution(solution.doses, solution.regimenInfo);
+                return card;
+            };
+
+            optionsContainer.appendChild(createOptionCard(evenOption, 'Most Even Distribution', 'Minimizes day-to-day dose variation.'));
+            
+            const evenDosesStr = JSON.stringify(evenOption.doses.sort((a,b)=>b-a));
+            const easyDosesStr = JSON.stringify(easyOption.doses.sort((a,b)=>b-a));
+            if (evenDosesStr !== easyDosesStr) {
+                 optionsContainer.appendChild(createOptionCard(easyOption, 'Easiest to Take', 'Uses fewest pill types & avoids half-tablets.'));
+            }
+
+            optionsContainer.classList.remove('hidden');
         }
+
+        function calculateWarfarinDosage() {
+            const totalDays = parseInt(totalDaysInput.value, 10);
+            const errorEl = document.getElementById('dailyDoseError');
+            const resultEl = document.getElementById('warfarinResult');
+            errorEl.style.display = 'none';
+
+            if (!totalDays || totalDays <= 0) {
+                showModal("Please set a valid number of days for the supply.");
+                return;
+            }
+
+            const dailyInputs = Array.from(document.querySelectorAll('.daily-dose-input'));
+            const weeklySchedule = {};
+            let hasError = false;
+
+            const weeklyCombinations = appliedRegimenCombinations;
+
+            dailyInputs.forEach((input) => {
+                const day = input.dataset.day;
+                const dose = parseFloat(input.value) || 0;
+                let combination;
+
+                if (weeklyCombinations && weeklyCombinations[dose] !== undefined) {
+                    combination = weeklyCombinations[dose];
+                } else {
+                    combination = getTabletCombination(dose);
+                }
+                
+                if (dose > 0 && !combination) {
+                    hasError = true;
+                    input.classList.add('border-red-500');
+                    input.style.boxShadow = "0 0 10px red";
+                } else {
+                    input.classList.remove('border-red-500');
+                    input.style.boxShadow = "none";
+                }
+                weeklySchedule[day] = { dose, combination };
+            });
+
+            if (hasError) {
+                errorEl.textContent = "Invalid dose. One or more doses cannot be formed with 2, 3, 5mg tablets."
+                errorEl.style.display = 'block';
+                resultEl.style.display = 'none';
+                return;
+            }
+
+            let total5mg = 0, total3mg = 0, total2mg = 0;
+            const startDate = new Date(currentDateInput.value);
+            
+            for (let i = 0; i < totalDays; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                const dayIndex = (currentDate.getDay() + 6) % 7; 
+                const dayName = daysOfWeek[dayIndex];
+                
+                const daySchedule = weeklySchedule[dayName];
+                if (daySchedule && daySchedule.combination) {
+                    total5mg += daySchedule.combination['5mg'];
+                    total3mg += daySchedule.combination['3mg'];
+                    total2mg += daySchedule.combination['2mg'];
+                }
+            }
+            
+            const formatNumber = (num) => Number(num.toFixed(2).replace(/\.?0+$/, ''));
+
+            document.getElementById('warfarinTotalDays').textContent = totalDays;
+            document.getElementById('total5mg').textContent = formatNumber(total5mg);
+            document.getElementById('total3mg').textContent = formatNumber(total3mg);
+            document.getElementById('total2mg').textContent = formatNumber(total2mg);
+
+            const tableBody = document.getElementById('warfarinBreakdownTable');
+            tableBody.innerHTML = '';
+            daysOfWeek.forEach(day => {
+                const schedule = weeklySchedule[day];
+                const combo = schedule.combination || { '5mg': '-', '3mg': '-', '2mg': '-' };
+                const formatTab = (val) => (val === undefined || val === null || val === '-') ? '-' : formatNumber(val);
+                const row = `
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="p-3 font-medium opacity-80">${day}</td>
+                        <td class="p-3 text-center font-bold text-lg">${formatNumber(schedule.dose)}</td>
+                        <td class="p-3 text-center text-pink-500 font-bold">${formatTab(combo['5mg'])}</td>
+                        <td class="p-3 text-center text-blue-500 font-bold">${formatTab(combo['3mg'])}</td>
+                        <td class="p-3 text-center text-orange-400 font-bold">${formatTab(combo['2mg'])}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+
+            resultEl.style.display = 'block';
+            appliedRegimenCombinations = null;
+        }
+
+        // --- INR-BASED TWD ADJUSTMENT ---
+        const guidelines = {
+            thai: [
+                { range: "< 1.5", minInr: 0, maxInr: 1.49, action: "Increase TWD by 10-20%", minAdj: 0.10, maxAdj: 0.20, hold: null, vitK: null, adjustmentText: "+10% to +20%" },
+                { range: "1.5 - 1.9", minInr: 1.5, maxInr: 1.9, action: "Increase TWD by 5-10%", minAdj: 0.05, maxAdj: 0.10, hold: null, vitK: null, adjustmentText: "+5% to +10%" },
+                { range: "2.0 - 3.0", minInr: 2.0, maxInr: 3.0, action: "Continue current dose", minAdj: 0, maxAdj: 0, hold: null, vitK: null, adjustmentText: "0%" },
+                { range: "3.1 - 3.5", minInr: 3.1, maxInr: 3.5, action: "Decrease TWD by 5-10%", minAdj: -0.10, maxAdj: -0.05, hold: null, vitK: null, adjustmentText: "-5% to -10%" },
+                { range: "3.6 - 4.0", minInr: 3.6, maxInr: 4.0, action: "Hold dose, Decrease TWD", minAdj: -0.15, maxAdj: -0.10, hold: "Hold 1 dose", vitK: null, adjustmentText: "-10% to -15%" },
+                { range: "> 4.0", minInr: 4.01, maxInr: Infinity, action: "Hold dose, Decrease TWD", minAdj: -0.20, maxAdj: -0.15, hold: "Hold 1-2 doses", vitK: "Consider Oral Vit. K", adjustmentText: "-15% to -20%" }
+            ],
+            accp: [
+                { range: "< 2.0", minInr: 0, maxInr: 1.99, action: "Increase TWD", minAdj: 0.05, maxAdj: 0.15, hold: null, vitK: null, adjustmentText: "+5% to +15%" },
+                { range: "2.0 - 3.0", minInr: 2.0, maxInr: 3.0, action: "Continue current dose", minAdj: 0, maxAdj: 0, hold: null, vitK: null, adjustmentText: "0%" },
+                { range: "3.1 - 4.0", minInr: 3.1, maxInr: 4.0, action: "Decrease TWD", minAdj: -0.15, maxAdj: -0.05, hold: "Consider holding 1 dose", vitK: null, adjustmentText: "-5% to -15%" },
+                { range: "> 4.0", minInr: 4.01, maxInr: Infinity, action: "Hold dose(s), Decrease TWD", minAdj: -0.20, maxAdj: -0.10, hold: "Hold 1-2 doses", vitK: (inr) => inr > 10 ? "Administer Oral Vitamin K (2.5-5mg)" : (inr > 4.5 ? "Consider Oral Vitamin K (1-2.5mg) if high bleed risk" : null), adjustmentText: "-10% to -20%" }
+            ]
+        };
+
+        function updateInrReferenceTable() {
+            const guidelineKey = document.querySelector('input[name="guideline"]:checked').value;
+            const tableBody = document.getElementById('inrReferenceTable');
+            const data = guidelines[guidelineKey];
+            
+            tableBody.innerHTML = '';
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-white/5 transition-colors';
+                let actionText = row.action;
+                if (row.hold) actionText += ` (${row.hold})`;
+                let vitKText = typeof row.vitK === 'string' ? row.vitK : (typeof row.vitK === 'function' ? 'Consider Oral Vit. K based on INR & risk' : '');
+
+                tr.innerHTML = `
+                    <td class="p-3 font-medium opacity-90">${row.range}</td>
+                    <td class="p-3">${actionText} ${vitKText ? `<br><span class='text-sm' style='color: var(--accent-color)'>${vitKText}</span>` : ''}</td>
+                    <td class="p-3 font-mono font-bold">${row.adjustmentText}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function calculateInrAdjustment() {
+            const inr = parseFloat(document.getElementById('currentInr').value);
+            const twd = parseFloat(document.getElementById('currentTwd').value);
+            const guidelineKey = document.querySelector('input[name="guideline"]:checked').value;
+            const resultEl = document.getElementById('inrResult');
+            const holdDoseLine = document.getElementById('inrHoldDoseLine');
+            const holdDoseSpan = document.getElementById('inrHoldDose');
+
+            if (isNaN(inr) || isNaN(twd) || inr <= 0 || twd <= 0) {
+                showModal("Please enter a valid Current INR and Total Weekly Dose.");
+                resultEl.style.display = 'none';
+                return;
+            }
+
+            const guideline = guidelines[guidelineKey];
+            const rule = guideline.find(r => inr >= r.minInr && inr <= r.maxInr);
+
+            if (!rule) {
+                showModal("Could not find a matching guideline for the entered INR.");
+                return;
+            }
+
+            let vitKRec = null;
+            if (typeof rule.vitK === 'function') {
+                vitKRec = rule.vitK(inr);
+            } else if (typeof rule.vitK === 'string') {
+                vitKRec = rule.vitK;
+            }
+
+            const minNewTwd = twd * (1 + rule.minAdj);
+            const maxNewTwd = twd * (1 + rule.maxAdj);
+            const avgNewTwd = (minNewTwd + maxNewTwd) / 2;
+            const suggestedTwd = Math.round(avgNewTwd * 2) / 2; // Round to nearest 0.5
+
+            document.getElementById('inrAction').textContent = `${rule.action}${vitKRec ? ` - ${vitKRec}` : ''}`;
+            
+            if (rule.hold) {
+                holdDoseSpan.textContent = rule.hold;
+                holdDoseLine.classList.remove('hidden');
+            } else {
+                holdDoseLine.classList.add('hidden');
+            }
+
+            document.getElementById('newTwdRange').textContent = `${minNewTwd.toFixed(2)} - ${maxNewTwd.toFixed(2)}`;
+            document.getElementById('suggestedNewTwd').textContent = suggestedTwd.toFixed(1);
+            
+            const applyBtn = document.getElementById('applyNewTwdBtn');
+            applyBtn.onclick = () => {
+                document.getElementById('twdInput').value = suggestedTwd.toFixed(1);
+                switchTab('warfarin');
+                switchWarfarinTab('twd');
+                distributeTWD();
+            };
+
+            resultEl.style.display = 'block';
+        }
+
+        // --- INITIALIZE VIEWS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateInrReferenceTable();
+        });
 
     </script>
 </body>
